@@ -272,3 +272,21 @@ button.btn { cursor: pointer; font-family: inherit; }
   body { background: #fff; }
   .card { break-inside: avoid; }
 }
+
+/* health check: profile, sharing, comparison, privacy page */
+.hc-profile { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.field { display: grid; gap: 6px; }
+.field label { font-weight: 600; }
+select { font: inherit; padding: 10px 12px; border: 1.5px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink); }
+select:focus { border-color: var(--green); outline: none; }
+.hc-share { display: flex; gap: 12px; align-items: flex-start; padding: 18px 20px; margin-bottom: 8px; background: var(--tint); border-radius: 8px; max-width: 820px; }
+.hc-share input { width: 20px; height: 20px; margin-top: 3px; accent-color: var(--green); flex: none; }
+.hc-share label { display: grid; gap: 4px; cursor: pointer; }
+.hc-share label span { color: var(--muted); font-size: 0.95rem; }
+.cmp-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.cmp-list li { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.cmp { font-variant-numeric: tabular-nums; }
+.cmp em { color: var(--muted); font-style: normal; }
+.prose { gap: 14px; }
+.prose h2 { font-size: 1.6rem; margin-top: 18px; }
+@media (max-width: 760px) { .hc-profile { grid-template-columns: 1fr; } }

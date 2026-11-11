@@ -3,6 +3,8 @@
   "use strict";
 
   var EMAIL = "globalsystemsthinking@gmail.com";
+  // Web app address of the GSST Google Sheet script. Leave empty to send nothing.
+  var ENDPOINT = "";
   var STORE_KEY = "gsst-health-check-last";
 
   var AREAS = [
@@ -138,7 +140,7 @@
       if (t.other) {
         nameBox = el("div", { "class": "hc-tool-other", hidden: "" });
         nameBox.appendChild(el("label", { "for": "tool-other-name", "class": "hc-rate-label" }, "Which tool?"));
-        nameBox.appendChild(el("input", { type: "text", id: "tool-other-name", maxlength: "60", placeholder: "For example: communities of practice" }));
+        nameBox.appendChild(el("input", { type: "text", id: "tool-other-name", maxlength: "60", placeholder: "For example: communities of practice (no names, please)" }));
         row.appendChild(nameBox);
       }
       var rate = el("div", { "class": "hc-tool-rate", hidden: "" });
@@ -192,7 +194,12 @@
       date: new Date().toISOString().slice(0, 10),
       overall: overall,
       areas: areas,
-      tools: tools
+      tools: tools,
+      profile: {
+        sector: document.getElementById("hc-sector").value,
+        size: document.getElementById("hc-size").value,
+        level: document.getElementById("hc-level").value
+      }
     };
   }
 
@@ -219,6 +226,50 @@
       }
     }
     return notes;
+  }
+
+  /* ---------- anonymous sharing ---------- */
+  function send(payload) {
+    if (!ENDPOINT) return;
+    try {
+      fetch(ENDPOINT, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" },
+                        body: JSON.stringify(payload), keepalive: true }).catch(function () {});
+    } catch (e) { /* sending is optional */ }
+  }
+
+  function sharePayload(r) {
+    var tools = {};
+    var otherName = "";
+    r.tools.forEach(function (x) {
+      tools[x.tool.id] = x.rating || 0;
+      if (x.tool.other && x.tool.name !== "Another tool") otherName = x.tool.name;
+    });
+    return {
+      type: "result",
+      answers: STATEMENTS.map(function (_, i) { return value("q" + i); }),
+      tools: tools,
+      otherName: otherName,
+      sector: r.profile.sector, size: r.profile.size, level: r.profile.level
+    };
+  }
+
+  function loadComparison(r) {
+    if (!ENDPOINT || !window.fetch) return;
+    fetch(ENDPOINT).then(function (res) { return res.json(); }).then(function (d) {
+      if (!d || !d.areas) return;
+      var host = document.getElementById("hc-compare");
+      if (!host) return;
+      var rows = r.areas.map(function (a) {
+        var avg = d.areas[a.id];
+        var diff = a.score - avg;
+        var word = diff > 0.25 ? "above" : diff < -0.25 ? "below" : "close to";
+        return "<li><span>" + esc(a.name) + "</span><span class=\"cmp\"><strong>" + fmt(a.score) + "</strong> you &middot; " +
+               fmt(avg) + " average <em>(" + word + ")</em></span></li>";
+      }).join("");
+      host.innerHTML = "<h3>How you compare</h3><p class=\"muted\">Average of " + d.n + " organisations that have taken the Health Check.</p>" +
+                       "<ul class=\"cmp-list\">" + rows + "</ul>";
+      host.hidden = false;
+    }).catch(function () {});
   }
 
   /* ---------- dashboard ---------- */
@@ -282,6 +333,7 @@
         "<div class=\"card\"><h3>Your four areas</h3>" + bars + "</div>" +
         "<div class=\"card\"><h3>Your learning tools</h3>" + toolsHtml + notesHtml + "</div>" +
       "</div>" +
+      "<div class=\"card\" id=\"hc-compare\" hidden></div>" +
       "<div class=\"dash-grid\">" +
         "<div class=\"card\"><h3>Try this month: " + esc(lowest.name.toLowerCase()) + "</h3><ol class=\"tips\">" +
           adv.tips.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ol></div>" +
@@ -295,7 +347,8 @@
         "<button type=\"button\" class=\"btn btn-ghost\" id=\"hc-retake\">Retake the Health Check</button>" +
         "<a class=\"btn btn-ghost\" href=\"index.html#services\">See our services</a>" +
       "</div>" +
-      "<p class=\"muted small\">Your answers stay on your device and are not sent to GSST.</p>";
+      "<p class=\"muted small\">" + (r.shared ? "Your anonymous answers were added to GSST's research. No name or contact details were collected." :
+        "You chose not to share your answers. They stay on your device.") + " <a href=\"privacy.html\">Privacy note</a></p>";
 
     var dash = document.getElementById("hc-dash");
     dash.innerHTML = html;
@@ -317,7 +370,11 @@
     buildStatements();
     buildTools();
     var form = document.getElementById("hc-form");
-    form.addEventListener("change", updateProgress);
+    var started = false;
+    form.addEventListener("change", function () {
+      if (!started) { started = true; send({ type: "event", event: "start" }); }
+      updateProgress();
+    });
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       var done = updateProgress();
@@ -335,8 +392,12 @@
         return;
       }
       var r = collect();
+      r.shared = document.getElementById("hc-share").checked;
       var last = loadLast();
       render(r, last);
+      send({ type: "event", event: "finish" });
+      if (r.shared) send(sharePayload(r));
+      loadComparison(r);
       saveLast(r);
       document.getElementById("hc-form-section").hidden = true;
       document.querySelector(".page-intro").hidden = true;
