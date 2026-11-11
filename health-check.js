@@ -47,7 +47,9 @@
     { id: "scenarios", name: "Scenario planning", helps: "Preparing for changing conditions", areas: ["conditions"],
       tip: "Scenarios help most when they lead to early warning signs that you then watch." },
     { id: "pilots", name: "Pilots and small experiments", helps: "Testing beliefs safely", areas: ["beliefs", "conditions"],
-      tip: "Pilots help most when you agree beforehand what result would change your mind." }
+      tip: "Pilots help most when you agree beforehand what result would change your mind." },
+    { id: "other", name: "Other", helps: "A tool not listed here", areas: [], other: true,
+      tip: "It may help to check what this tool is meant to achieve and whether the way it is used supports that." }
   ];
 
   var PROFILES = [
@@ -108,23 +110,19 @@
 
   function buildStatements() {
     var host = document.getElementById("hc-statements");
-    var n = 0;
-    AREAS.forEach(function (area) {
-      var group = el("fieldset", { "class": "hc-area" });
-      group.appendChild(el("legend", null, esc(area.name)));
-      STATEMENTS.forEach(function (st, i) {
-        if (st[0] !== area.id) return;
-        n++;
-        var row = el("div", { "class": "hc-row" });
-        var qid = "q" + i + "-label";
-        row.appendChild(el("p", { "class": "hc-q", id: qid }, "<span class=\"hc-num\">" + n + "</span>" + esc(st[1])));
-        row.appendChild(scale("q" + i, qid));
-        group.appendChild(row);
-      });
-      host.appendChild(group);
+    host.appendChild(el("p", { "class": "scale-key" }, "<span>1 = strongly disagree</span><span>5 = strongly agree</span>"));
+    var list = el("div", { "class": "hc-list" });
+    // interleave the four areas so no category is grouped or named
+    var order = [];
+    for (var k = 0; k < 4; k++) for (var a = 0; a < AREAS.length; a++) order.push(a * 4 + k);
+    order.forEach(function (i, n) {
+      var row = el("div", { "class": "hc-row" });
+      var qid = "q" + i + "-label";
+      row.appendChild(el("p", { "class": "hc-q", id: qid }, "<span class=\"hc-num\">" + (n + 1) + "</span>" + esc(STATEMENTS[i][1])));
+      row.appendChild(scale("q" + i, qid));
+      list.appendChild(row);
     });
-    var legend = el("p", { "class": "scale-key" }, "<span>1 = strongly disagree</span><span>5 = strongly agree</span>");
-    host.insertBefore(legend, host.firstChild);
+    host.appendChild(list);
   }
 
   function buildTools() {
@@ -136,6 +134,13 @@
       check.appendChild(el("input", { type: "checkbox", id: cid, value: t.id }));
       check.appendChild(el("label", { "for": cid }, "<strong>" + esc(t.name) + "</strong><span>" + esc(t.helps) + "</span>"));
       row.appendChild(check);
+      var nameBox = null;
+      if (t.other) {
+        nameBox = el("div", { "class": "hc-tool-other", hidden: "" });
+        nameBox.appendChild(el("label", { "for": "tool-other-name", "class": "hc-rate-label" }, "Which tool?"));
+        nameBox.appendChild(el("input", { type: "text", id: "tool-other-name", maxlength: "60", placeholder: "For example: communities of practice" }));
+        row.appendChild(nameBox);
+      }
       var rate = el("div", { "class": "hc-tool-rate", hidden: "" });
       var rl = "rate-" + t.id + "-label";
       rate.appendChild(el("span", { "class": "hc-rate-label", id: rl }, "How effective?"));
@@ -144,6 +149,7 @@
       host.appendChild(row);
       check.querySelector("input").addEventListener("change", function (e) {
         rate.hidden = !e.target.checked;
+        if (nameBox) nameBox.hidden = !e.target.checked;
       });
     });
   }
@@ -173,14 +179,20 @@
     var tools = [];
     TOOLS.forEach(function (t) {
       var box = document.getElementById("tool-" + t.id);
-      if (box && box.checked) tools.push({ tool: t, rating: value("rate-" + t.id) });
+      if (box && box.checked) {
+        var tool = t;
+        if (t.other) {
+          var nm = document.getElementById("tool-other-name").value.trim();
+          tool = { id: t.id, name: nm || "Another tool", areas: [], tip: t.tip, other: true };
+        }
+        tools.push({ tool: tool, rating: value("rate-" + t.id) });
+      }
     });
     return {
       date: new Date().toISOString().slice(0, 10),
       overall: overall,
       areas: areas,
-      tools: tools,
-      thursday: document.getElementById("hc-thursday").value.trim()
+      tools: tools
     };
   }
 
@@ -193,12 +205,13 @@
     var notes = [];
     r.tools.forEach(function (x) {
       if (x.rating !== null && x.rating <= 2) {
-        notes.push("You use " + x.tool.name.toLowerCase() + " but rate them as not very effective. " + x.tool.tip);
+        var nm = x.tool.other ? x.tool.name : x.tool.name.toLowerCase();
+        notes.push("You use " + nm + " but rate " + (x.tool.other ? "it" : "them") + " as not very effective. " + x.tool.tip);
       }
     });
     var supports = r.tools.some(function (x) { return x.tool.areas.indexOf(lowestId) !== -1; });
     if (!supports) {
-      var helpers = TOOLS.filter(function (t) { return t.areas.indexOf(lowestId) !== -1; })
+      var helpers = TOOLS.filter(function (t) { return !t.other; }).filter(function (t) { return t.areas.indexOf(lowestId) !== -1; })
                          .map(function (t) { return t.name.toLowerCase(); });
       if (helpers.length) {
         notes.push("None of the tools you use supports your lowest area, " + areaName(lowestId).toLowerCase() +
@@ -221,35 +234,14 @@
     } catch (e) { /* storage unavailable: results still show */ }
   }
 
-  function summaryText(r, prof, lowest) {
-    var lines = [];
-    lines.push("Systems Thinking Health Check results (" + r.date + ")");
-    lines.push("");
-    lines.push("Profile: " + prof.name + " (overall " + fmt(r.overall) + " out of 5)");
-    r.areas.forEach(function (a) { lines.push("- " + a.name + ": " + fmt(a.score)); });
-    lines.push("Lowest area: " + lowest.name);
-    lines.push("");
-    lines.push("Learning tools in use:");
-    if (r.tools.length) {
-      r.tools.forEach(function (x) {
-        lines.push("- " + x.tool.name + (x.rating ? ": rated " + x.rating + " out of 5" : ": not rated"));
-      });
-    } else { lines.push("- None selected"); }
-    if (r.thursday) { lines.push(""); lines.push("The problem that keeps coming back: " + r.thursday); }
-    lines.push("");
-    lines.push("I would like to discuss what these results mean for our organisation.");
-    return lines.join("\n");
-  }
-
   function render(r, last) {
     var prof = profileFor(r.overall);
     var sorted = r.areas.slice().sort(function (a, b) { return a.score - b.score; });
     var lowest = sorted[0], strongest = sorted[sorted.length - 1];
     var adv = ADVICE[lowest.id];
     var notes = toolNotes(r, lowest.id);
-    var summary = summaryText(r, prof, lowest);
-    var mail = "mailto:" + EMAIL + "?subject=" + encodeURIComponent("Systems Thinking Health Check results") +
-               "&body=" + encodeURIComponent(summary);
+    var mail = "mailto:" + EMAIL + "?subject=" + encodeURIComponent("Enquiry: " + adv.service) +
+               "&body=" + encodeURIComponent("Hello GSST,\n\nI took the Systems Thinking Health Check and would like to know more about " + adv.service + ".\n");
 
     var bars = r.areas.map(function (a) {
       var tag = a.id === lowest.id ? "<span class=\"tag tag-low\">Lowest</span>" :
@@ -290,19 +282,12 @@
         "<div class=\"card\"><h3>Your four areas</h3>" + bars + "</div>" +
         "<div class=\"card\"><h3>Your learning tools</h3>" + toolsHtml + notesHtml + "</div>" +
       "</div>" +
-      (r.thursday ? "<div class=\"card thursday\"><h3>Your Thursday</h3><p class=\"quote\">“" + esc(r.thursday) +
-        "”</p><p class=\"muted\">Which of the four areas does this problem sit in? Your lowest area, " +
-        esc(lowest.name.toLowerCase()) + ", is a good place to start.</p></div>" : "") +
       "<div class=\"dash-grid\">" +
         "<div class=\"card\"><h3>Try this month: " + esc(lowest.name.toLowerCase()) + "</h3><ol class=\"tips\">" +
           adv.tips.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ol></div>" +
         "<div class=\"card next\"><h3>Suggested next step</h3><p><strong>" + esc(adv.service) + "</strong>, " + esc(adv.why) + ".</p>" +
-          "<p class=\"muted\">Send us your results and we will suggest how to take this further.</p>" +
-          "<div class=\"actions no-print\">" +
-            "<a class=\"btn btn-primary\" href=\"" + mail + "\">Email my results to GSST</a>" +
-            "<button type=\"button\" class=\"btn btn-ghost\" id=\"hc-copy\">Copy summary</button>" +
-          "</div>" +
-          "<p class=\"muted small no-print\" id=\"hc-copy-status\" aria-live=\"polite\">Or email " + EMAIL + " with your summary.</p>" +
+          "<div class=\"actions no-print\"><a class=\"btn btn-primary\" href=\"" + mail + "\">Ask about " + esc(adv.service) + "</a></div>" +
+          "<p class=\"muted small no-print\">Or email " + EMAIL + ".</p>" +
         "</div>" +
       "</div>" +
       "<div class=\"actions dash-foot no-print\">" +
@@ -310,19 +295,11 @@
         "<button type=\"button\" class=\"btn btn-ghost\" id=\"hc-retake\">Retake the Health Check</button>" +
         "<a class=\"btn btn-ghost\" href=\"index.html#services\">See our services</a>" +
       "</div>" +
-      "<p class=\"muted small\">Your answers stay on your device. Nothing is sent to GSST unless you email your results.</p>";
+      "<p class=\"muted small\">Your answers stay on your device and are not sent to GSST.</p>";
 
     var dash = document.getElementById("hc-dash");
     dash.innerHTML = html;
 
-    document.getElementById("hc-copy").addEventListener("click", function () {
-      var status = document.getElementById("hc-copy-status");
-      try {
-        navigator.clipboard.writeText(summary).then(function () {
-          status.textContent = "Summary copied. Paste it into an email to " + EMAIL + ".";
-        }, function () { status.textContent = "Copying is not available here. Please email " + EMAIL + "."; });
-      } catch (e) { status.textContent = "Copying is not available here. Please email " + EMAIL + "."; }
-    });
     document.getElementById("hc-print").addEventListener("click", function () {
       try { window.print(); } catch (e) { /* printing unavailable */ }
     });

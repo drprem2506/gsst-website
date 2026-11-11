@@ -212,7 +212,11 @@ blockquote footer { margin-top: 12px; font-size: 0.95rem; color: var(--muted); }
 .hc-tool-check label { display: grid; cursor: pointer; }
 .hc-tool-check label span { color: var(--muted); font-size: 0.95rem; }
 .hc-tool-rate { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding-left: 32px; }
-.hc-tool-rate[hidden] { display: none; }
+.hc-tool-rate[hidden], .hc-tool-other[hidden] { display: none; }
+.hc-tool-other { display: grid; gap: 6px; padding-left: 32px; }
+.hc-tool-other input { font: inherit; padding: 8px 12px; border: 1.5px solid var(--line); border-radius: 6px; max-width: 100%; }
+.hc-tool-other input:focus { border-color: var(--green); outline: none; }
+.hc-list .hc-row:first-child { border-top: 0; }
 .hc-rate-label { color: var(--muted); font-size: 0.95rem; }
 .hc-tool-rate .scale label { width: 36px; height: 36px; }
 textarea { width: 100%; max-width: 760px; font: inherit; padding: 12px 14px; border: 1.5px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink); }
