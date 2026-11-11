@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en-SG">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Systems Thinking Health Check | GSST</title>
+<meta name="description" content="A free 5-minute self-assessment of how well your organisation sees patterns, causes, beliefs and changing conditions, with a personal results dashboard.">
+<meta property="og:title" content="Systems Thinking Health Check | GSST">
+<meta property="og:description" content="A free 5-minute self-assessment of how well your organisation sees patterns, causes, beliefs and changing conditions, with a personal results dashboard.">
+<meta property="og:image" content="assets/video-poster.jpg">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&amp;family=Source+Sans+3:ital,wght@0,400;0,600;1,400&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="health-check.js" defer></script>
+</head>
+<body id="top">
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html"><img src="assets/logo.png" alt="The Global School of Systems Thinking" width="863" height="240"></a>
+    <nav class="nav" aria-label="Main">
+      <a href="index.html#services">Services</a>
+      <a href="health-check.html" aria-current="page">Health Check</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#publications">Publications</a>
+      <a class="btn btn-primary" href="index.html#contact">Contact us</a>
+    </nav>
+  </div>
+</header>
+<main>
+<section class="page-intro no-print">
+  <div class="wrap stack">
+    <span class="eyebrow">Free self-assessment &middot; about 5 minutes</span>
+    <h1>Systems Thinking Health Check</h1>
+    <hr class="rule">
+    <p class="lead">How well does your organisation see the system? Rate 16 statements, tell us about the learning tools you use, and get your own results dashboard with practical suggestions.</p>
+    <p class="privacy">Your answers stay on your device. Nothing is sent to GSST unless you choose to email your results.</p>
+  </div>
+</section>
+
+<section class="hc-form no-print" id="hc-form-section">
+  <div class="wrap">
+    <form id="hc-form" novalidate>
+      <div class="hc-part">
+        <div class="hc-part-head">
+          <span class="eyebrow">Part A</span>
+          <h2>Where you are now</h2>
+          <p>Rate each statement from 1 (strongly disagree) to 5 (strongly agree), thinking about your organisation as a whole.</p>
+        </div>
+        <div id="hc-statements"></div>
+      </div>
+
+      <div class="hc-part">
+        <div class="hc-part-head">
+          <span class="eyebrow">Part B</span>
+          <h2>Your learning tools</h2>
+          <p>Which of these does your organisation use to learn and improve? Tick all that apply, then rate how effective each one is, from 1 (not effective) to 5 (very effective).</p>
+        </div>
+        <div id="hc-tools" class="hc-tools"></div>
+      </div>
+
+      <div class="hc-part">
+        <div class="hc-part-head">
+          <span class="eyebrow">Part C &middot; optional</span>
+          <h2>Your organisation's Thursday</h2>
+          <p>What problem keeps coming back in your organisation?</p>
+        </div>
+        <label class="visually-hidden" for="hc-thursday">The problem that keeps coming back</label>
+        <textarea id="hc-thursday" rows="3" maxlength="500" placeholder="For example: every year-end, the same handover delays between sales and operations."></textarea>
+      </div>
+
+      <div class="hc-submit">
+        <p id="hc-progress" class="hc-progress" aria-live="polite">0 of 16 statements answered</p>
+        <button type="submit" class="btn btn-primary" id="hc-see">See my results</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<section class="hc-results" id="hc-results" hidden>
+  <div class="wrap">
+    <div class="hc-dash" id="hc-dash"></div>
+  </div>
+</section>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <span>&copy; 2026 The Global School of Systems Thinking</span>
+    <nav aria-label="Footer">
+      <a href="index.html#services">Services</a>
+      <a href="health-check.html">Health Check</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#publications">Publications</a>
+      <a href="mailto:globalsystemsthinking@gmail.com">globalsystemsthinking@gmail.com</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>
