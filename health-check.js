@@ -4,7 +4,7 @@
 
   var EMAIL = "globalsystemsthinking@gmail.com";
   // Web app address of the GSST Google Sheet script. Leave empty to send nothing.
-  var ENDPOINT = "";
+  var ENDPOINT = "https://script.google.com/macros/s/AKfycbw_pX-eAvm-QaGTLADu6RY6bb-65RiuWouXvSr3eJKB6TKcOi8VecgTOIo18xHAQvfL/exec";
   var STORE_KEY = "gsst-health-check-last";
 
   var AREAS = [
