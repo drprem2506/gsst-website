@@ -34,7 +34,7 @@
     <span class="eyebrow">Free self-assessment &middot; about 5 minutes</span>
     <h1>Thinking Smarter Health Check</h1>
     <hr class="rule">
-    <p class="lead">How well does your organisation see the bigger picture? Rate 16 statements, note the learning tools your organisation uses, and get your own results dashboard with practical suggestions.</p>
+    <p class="lead">How well does your organisation see the bigger picture? Rate 16 statements about your organisation and 4 about your own habits, note the learning tools your organisation uses, and get your own results dashboard with practical suggestions.</p>
     <p>Doing this with your team? <a href="session.html">Run a Team Health Check</a> and see everyone's combined results live.</p>
     <p class="privacy">Anonymous: we never ask for your name or contact details. <a href="privacy.html">Privacy note</a></p>
   </div>
@@ -46,7 +46,7 @@
       <div class="hc-part">
         <div class="hc-part-head">
           <span class="eyebrow">Part A</span>
-          <h2>Where you are now</h2>
+          <h2>Where your organisation is now</h2>
           <p>Rate each statement from 1 (strongly disagree) to 5 (strongly agree), thinking about your organisation as a whole.</p>
         </div>
         <div id="hc-statements"></div>
@@ -55,6 +55,15 @@
       <div class="hc-part">
         <div class="hc-part-head">
           <span class="eyebrow">Part B</span>
+          <h2>Your own habits</h2>
+          <p>Now think about yourself. Rate each statement from 1 (strongly disagree) to 5 (strongly agree), based on what you usually do at work.</p>
+        </div>
+        <div id="hc-self"></div>
+      </div>
+
+      <div class="hc-part">
+        <div class="hc-part-head">
+          <span class="eyebrow">Part C</span>
           <h2>Your learning tools</h2>
           <p>Which of these does your organisation use to learn and improve? Tick all that apply, then rate how effective each one is, from 1 (not effective) to 5 (very effective).</p>
         </div>
@@ -84,7 +93,7 @@
       </div>
 
       <div class="hc-submit">
-        <p id="hc-progress" class="hc-progress" aria-live="polite">0 of 16 statements answered</p>
+        <p id="hc-progress" class="hc-progress" aria-live="polite">0 of 20 statements answered</p>
         <button type="submit" class="btn btn-primary" id="hc-see">See my results</button>
       </div>
     </form>

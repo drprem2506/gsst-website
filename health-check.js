@@ -33,6 +33,21 @@
     ["conditions", "We regularly ask what could change in the next few years and how we would respond."]
   ];
 
+  // Part B: one "I" statement per area, in AREAS order
+  var SELF = [
+    ["patterns", "When a problem comes up, I look back at whether it has happened before."],
+    ["cause", "I check how my decisions affect other teams."],
+    ["beliefs", "I question my own assumptions before I act."],
+    ["conditions", "I watch for early warning signs in my area of work."]
+  ];
+
+  var SELF_TIPS = {
+    patterns: "Keep a simple log of the problems that land on your desk, and look back at it at the end of each month.",
+    cause: "Before your next decision, ask one person in another team how it will affect them.",
+    beliefs: "Write down the assumption behind your next plan, and ask a colleague to challenge it.",
+    conditions: "Choose two early warning signs in your own work and check them every week."
+  };
+
   var TOOLS = [
     { id: "workshop", name: "Classroom or workshop training", helps: "Building shared skills and language", areas: [],
       tip: "Training sticks best when participants practise on their own organisation's issues." },
@@ -127,6 +142,21 @@
     host.appendChild(list);
   }
 
+  function buildSelf() {
+    var host = document.getElementById("hc-self");
+    if (!host) return;
+    host.appendChild(el("p", { "class": "scale-key" }, "<span>1 = strongly disagree</span><span>5 = strongly agree</span>"));
+    var list = el("div", { "class": "hc-list" });
+    SELF.forEach(function (st, i) {
+      var row = el("div", { "class": "hc-row" });
+      var qid = "s" + i + "-label";
+      row.appendChild(el("p", { "class": "hc-q", id: qid }, "<span class=\"hc-num\">" + (STATEMENTS.length + i + 1) + "</span>" + esc(st[1])));
+      row.appendChild(scale("s" + i, qid));
+      list.appendChild(row);
+    });
+    host.appendChild(list);
+  }
+
   function buildTools() {
     var host = document.getElementById("hc-tools");
     TOOLS.forEach(function (t) {
@@ -164,9 +194,12 @@
   function updateProgress() {
     var done = 0;
     STATEMENTS.forEach(function (_, i) { if (value("q" + i) !== null) done++; });
-    document.getElementById("hc-progress").textContent = done + " of " + STATEMENTS.length + " statements answered";
+    SELF.forEach(function (_, i) { if (value("s" + i) !== null) done++; });
+    document.getElementById("hc-progress").textContent = done + " of " + TOTAL + " statements answered";
     return done;
   }
+
+  var TOTAL = STATEMENTS.length + SELF.length;
 
   /* ---------- scoring ---------- */
   function collect() {
@@ -175,7 +208,9 @@
       var vals = [];
       STATEMENTS.forEach(function (st, i) { if (st[0] === a.id) vals.push(answers[i]); });
       var sum = vals.reduce(function (s, v) { return s + v; }, 0);
-      return { id: a.id, name: a.name, score: sum / vals.length };
+      var own = null;
+      SELF.forEach(function (st, i) { if (st[0] === a.id) own = value("s" + i); });
+      return { id: a.id, name: a.name, score: sum / vals.length, self: own };
     });
     var overall = answers.reduce(function (s, v) { return s + v; }, 0) / answers.length;
     var tools = [];
@@ -248,6 +283,7 @@
       type: "result",
       answers: STATEMENTS.map(function (_, i) { return value("q" + i); }),
       tools: tools,
+      self: SELF.map(function (_, i) { return value("s" + i); }),
       otherName: otherName,
       sector: r.profile.sector, size: r.profile.size, level: r.profile.level
     };
@@ -280,9 +316,29 @@
     try {
       window.localStorage.setItem(STORE_KEY, JSON.stringify({
         date: r.date, overall: r.overall,
-        areas: r.areas.map(function (a) { return { id: a.id, score: a.score }; })
+        areas: r.areas.map(function (a) { return { id: a.id, score: a.score, self: a.self }; })
       }));
     } catch (e) { /* storage unavailable: results still show */ }
+  }
+
+  /* "I" compared with "we" in each area, and one action for the person */
+  function selfCard(r) {
+    var rows = r.areas.map(function (a) {
+      var g = a.self - a.score;
+      var word = g >= 1 ? "You do this more than your organisation does. You can lead by example." :
+                 g <= -1 ? "Your organisation does this more than you do. Draw on what is already around you." :
+                 "You and your organisation are roughly in step.";
+      return "<div class=\"gap-row\"><div class=\"gap-name\">" + esc(a.name) + "</div>" +
+        "<div class=\"gap-bars\">" +
+          "<div class=\"gap-line\"><span class=\"gap-who\">I</span><div class=\"bar-track\" role=\"img\" aria-label=\"Your own habits " + a.self + " out of 5\"><div class=\"bar-fill self\" style=\"width:" + (a.self / 5 * 100) + "%\"></div></div><span class=\"bar-value\">" + fmt(a.self) + "</span></div>" +
+          "<div class=\"gap-line\"><span class=\"gap-who\">We</span><div class=\"bar-track\" role=\"img\" aria-label=\"Your organisation " + fmt(a.score) + " out of 5\"><div class=\"bar-fill\" style=\"width:" + (a.score / 5 * 100) + "%\"></div></div><span class=\"bar-value\">" + fmt(a.score) + "</span></div>" +
+        "</div><p class=\"gap-note\">" + word + "</p></div>";
+    }).join("");
+    var mine = r.areas.slice().sort(function (a, b) { return a.self - b.self || a.score - b.score; })[0];
+    return "<div class=\"card\" id=\"hc-self-card\"><h3>You and your organisation</h3>" +
+      "<p class=\"muted\">Your own habits (I) next to how you rated your organisation (we). The gaps show where you can lead and where you may need support.</p>" +
+      rows +
+      "<div class=\"gap-action\"><strong>Your own next step: " + esc(mine.name.toLowerCase()) + ".</strong> " + esc(SELF_TIPS[mine.id]) + "</div></div>";
   }
 
   function render(r, last) {
@@ -318,6 +374,8 @@
              (x.rating ? "rated " + x.rating + " out of 5" : "not rated") + "\">" + dots + "</span></li>";
     }).join("") + "</ul>" : "<p class=\"muted\">No learning tools selected.</p>";
 
+    var selfHtml = selfCard(r);
+
     var notesHtml = notes.length ? "<ul class=\"notes\">" + notes.map(function (n) { return "<li>" + esc(n) + "</li>"; }).join("") + "</ul>" : "";
 
     var prevOverall = last ? "<p class=\"muted\">Last time (" + esc(last.date) + "): " + fmt(last.overall) + " out of 5, " + esc(profileFor(last.overall).name) + ".</p>" : "";
@@ -333,6 +391,7 @@
         "<div class=\"card\"><h3>Your four areas</h3>" + bars + "</div>" +
         "<div class=\"card\"><h3>Your learning tools</h3>" + toolsHtml + notesHtml + "</div>" +
       "</div>" +
+      selfHtml +
       "<div class=\"card\" id=\"hc-compare\" hidden></div>" +
       "<div class=\"dash-grid\">" +
         "<div class=\"card\"><h3>Try this month: " + esc(lowest.name.toLowerCase()) + "</h3><ol class=\"tips\">" +
@@ -368,6 +427,7 @@
   function init() {
     if (!document.getElementById("hc-form")) return;
     buildStatements();
+    buildSelf();
     buildTools();
     var form = document.getElementById("hc-form");
     var started = false;
@@ -385,9 +445,15 @@
         row.classList.toggle("missing", !answered);
         if (!answered && !firstMissing) firstMissing = row;
       });
-      if (done < STATEMENTS.length) {
+      SELF.forEach(function (_, i) {
+        var answered = value("s" + i) !== null;
+        var row = document.getElementById("s" + i + "-label").parentNode;
+        row.classList.toggle("missing", !answered);
+        if (!answered && !firstMissing) firstMissing = row;
+      });
+      if (done < TOTAL) {
         document.getElementById("hc-progress").textContent =
-          (STATEMENTS.length - done) + " statement" + (STATEMENTS.length - done === 1 ? "" : "s") + " still to answer. They are highlighted above.";
+          (TOTAL - done) + " statement" + (TOTAL - done === 1 ? "" : "s") + " still to answer. They are highlighted above.";
         if (firstMissing) firstMissing.scrollIntoView({ block: "center" });
         return;
       }

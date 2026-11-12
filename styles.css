@@ -341,3 +341,15 @@ body.presenting { font-size: 1.15rem; }
 .tiles.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .schools-link { margin-top: 28px; max-width: none; font-size: 1.05rem; }
 @media (max-width: 960px) { .tiles.four, .tiles.three { grid-template-columns: 1fr; } }
+
+/* Health Check: "I" next to "we" */
+#hc-self-card { margin-top: 24px; }
+.gap-row { display: grid; grid-template-columns: 11em 1fr; gap: 4px 18px; align-items: center; padding: 12px 0; border-top: 1px solid var(--line); }
+.gap-name { font-weight: 600; }
+.gap-bars { display: grid; gap: 6px; }
+.gap-line { display: grid; grid-template-columns: 2.2em 1fr 3.2em; gap: 10px; align-items: center; }
+.gap-who { font-size: .85rem; font-weight: 700; color: var(--muted); }
+.bar-fill.self { background: var(--green-deep); opacity: .55; }
+.gap-note { grid-column: 2; margin: 0; font-size: .95rem; color: var(--muted); }
+.gap-action { margin-top: 14px; padding: 14px 16px; background: var(--tint); border-radius: 8px; }
+@media (max-width: 640px) { .gap-row { grid-template-columns: 1fr; } .gap-note { grid-column: 1; } }
