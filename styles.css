@@ -335,3 +335,9 @@ body.presenting { font-size: 1.15rem; }
 #ss-copy-msg { white-space: pre-line; }
 @media (max-width: 860px) { .steps { grid-template-columns: 1fr; } }
 @media print { body.presenting .ss-head .actions { display: none; } }
+
+/* schools page */
+.tiles.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.tiles.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.schools-link { margin-top: 28px; max-width: none; font-size: 1.05rem; }
+@media (max-width: 960px) { .tiles.four, .tiles.three { grid-template-columns: 1fr; } }
