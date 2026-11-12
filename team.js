@@ -251,7 +251,7 @@
     $("ss-show").addEventListener("click", function () { showResults(true); });
     $("ss-print").addEventListener("click", function () { try { window.print(); } catch (e) { /* unavailable */ } });
     $("ss-copy").addEventListener("click", function () {
-      var msg = "Please take our 4-minute Team Health Check. It is anonymous: only the combined results are shown.\n" +
+      var msg = "Please take our 4-minute Thinking Smarter Team Check. It is anonymous: only the combined results are shown.\n" +
                 joinUrl(code) + "\nSession code: " + code;
       var out = $("ss-copy-msg");
       try {

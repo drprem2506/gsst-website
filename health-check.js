@@ -1,4 +1,4 @@
-/* GSST Systems Thinking Health Check: everything runs in the visitor's browser. */
+/* GSST Thinking Smarter Health Check: everything runs in the visitor's browser. */
 (function () {
   "use strict";
 
@@ -58,7 +58,7 @@
     { max: 2.5, name: "Firefighting", text: "Your organisation mostly reacts to events as they happen. Problems are handled quickly, but many of them come back." },
     { max: 3.5, name: "Noticing patterns", text: "Your organisation sees some patterns, but they are not yet used to change how decisions are made." },
     { max: 4.3, name: "Connecting the system", text: "Your organisation links patterns to their causes and often acts before problems grow. The next step is making this consistent across teams." },
-    { max: 99, name: "Systems-led", text: "Systems thinking is part of how your organisation works. The challenge now is to keep it strong as conditions change." }
+    { max: 99, name: "Systems-led", text: "Thinking smarter is part of how your organisation works. The challenge now is to keep it strong as conditions change." }
   ];
 
   var ADVICE = {
@@ -292,7 +292,7 @@
     var adv = ADVICE[lowest.id];
     var notes = toolNotes(r, lowest.id);
     var mail = "mailto:" + EMAIL + "?subject=" + encodeURIComponent("Enquiry: " + adv.service) +
-               "&body=" + encodeURIComponent("Hello GSST,\n\nI took the Systems Thinking Health Check and would like to know more about " + adv.service + ".\n");
+               "&body=" + encodeURIComponent("Hello GSST,\n\nI took the Thinking Smarter Health Check and would like to know more about " + adv.service + ".\n");
 
     var bars = r.areas.map(function (a) {
       var tag = a.id === lowest.id ? "<span class=\"tag tag-low\">Lowest</span>" :
