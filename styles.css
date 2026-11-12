@@ -353,3 +353,7 @@ body.presenting { font-size: 1.15rem; }
 .gap-note { grid-column: 2; margin: 0; font-size: .95rem; color: var(--muted); }
 .gap-action { margin-top: 14px; padding: 14px 16px; background: var(--tint); border-radius: 8px; }
 @media (max-width: 640px) { .gap-row { grid-template-columns: 1fr; } .gap-note { grid-column: 1; } }
+
+/* Schools: personal note */
+.note-text { max-width: 760px; }
+.note-text p { margin: 0 0 14px; }
