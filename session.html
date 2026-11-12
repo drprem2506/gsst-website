@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en-SG">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Team Session | GSST</title>
+<meta name="description" content="Facilitator screen for a live Team Health Check.">
+<meta property="og:title" content="Team Session | GSST">
+<meta property="og:description" content="Facilitator screen for a live Team Health Check.">
+<meta property="og:image" content="assets/video-poster.jpg">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&amp;family=Source+Sans+3:ital,wght@0,400;0,600;1,400&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<meta name="robots" content="noindex">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+<script src="team.js" defer></script>
+</head>
+<body id="top">
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html"><img src="assets/logo.png" alt="The Global School of Systems Thinking" width="863" height="240"></a>
+    <nav class="nav" aria-label="Main">
+      <a href="index.html#services">Services</a>
+      <a href="health-check.html">Health Check</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#publications">Publications</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+<main>
+<section id="ss-start" class="page-intro">
+  <div class="wrap stack">
+    <span class="eyebrow">For facilitators</span>
+    <h1>Team session</h1>
+    <hr class="rule">
+    <p class="lead">Start a session, put this page on the screen, and participants join on their phones with the QR code. Results update live and stay anonymous.</p>
+    <div class="actions"><button type="button" class="btn btn-primary" id="ss-new">Start a new session</button></div>
+    <form id="ss-open-form" class="join-card" style="margin-top:12px">
+      <label for="ss-existing"><strong>Or reopen a session</strong></label>
+      <div class="join-row">
+        <input id="ss-existing" type="text" autocapitalize="characters" autocomplete="off" maxlength="8" placeholder="Session code">
+        <button type="submit" class="btn btn-ghost">Open</button>
+      </div>
+      <p id="ss-open-msg" class="muted small" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+
+<section id="ss-live" hidden>
+  <div class="wrap">
+    <div id="ss-join-view" class="ss-join">
+      <div class="ss-qr-card">
+        <div id="ss-qr" aria-label="QR code to join the session"></div>
+        <p class="ss-url" id="ss-url"></p>
+      </div>
+      <div class="stack">
+        <span class="eyebrow">Scan to join</span>
+        <h1 class="ss-code" id="ss-code"></h1>
+        <p class="lead">Scan the QR code, or open the link and enter the code. It takes about 4 minutes, and your answers are anonymous.</p>
+        <p class="ss-count"><strong id="ss-count">0</strong> responses</p>
+        <p class="muted" id="ss-wait"></p>
+        <div class="actions">
+          <button type="button" class="btn btn-primary" id="ss-show" disabled>Show results</button>
+          <button type="button" class="btn btn-ghost" id="ss-end">End session</button>
+        </div>
+        <p class="muted small" id="ss-status" aria-live="polite"></p>
+      </div>
+    </div>
+
+    <div id="ss-results-view" hidden>
+      <div class="ss-head">
+        <h1>Our team's results</h1>
+        <p class="ss-count-inline">Session <strong id="ss-code-small"></strong> &middot; <strong id="ss-count-small">0</strong> responses</p>
+        <button type="button" class="btn btn-ghost" id="ss-hide">Back to joining</button>
+      </div>
+      <div class="dash-grid">
+        <div class="card"><h3>Four areas</h3><div id="ss-areas"></div></div>
+        <div class="card"><h3>Profiles in the room</h3><div id="ss-profiles"></div></div>
+        <div class="card"><h3>Where we agree most</h3><ol class="ss-items" id="ss-agree"></ol></div>
+        <div class="card"><h3>Where our views differ most</h3><ol class="ss-items" id="ss-differ"></ol></div>
+      </div>
+      <div class="card" style="margin-top:24px"><h3>What keeps coming back</h3><ul class="ss-recurring" id="ss-recurring"></ul></div>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <span>&copy; 2026 The Global School of Systems Thinking</span>
+    <nav aria-label="Footer">
+      <a href="index.html#services">Services</a>
+      <a href="health-check.html">Health Check</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#publications">Publications</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="mailto:globalsystemsthinking@gmail.com">globalsystemsthinking@gmail.com</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

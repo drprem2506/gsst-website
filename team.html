@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en-SG">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Team Health Check | GSST</title>
+<meta name="description" content="Join a live, anonymous Team Health Check session.">
+<meta property="og:title" content="Team Health Check | GSST">
+<meta property="og:description" content="Join a live, anonymous Team Health Check session.">
+<meta property="og:image" content="assets/video-poster.jpg">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&amp;family=Source+Sans+3:ital,wght@0,400;0,600;1,400&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<meta name="robots" content="noindex">
+<script src="team.js" defer></script>
+</head>
+<body id="top">
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html"><img src="assets/logo.png" alt="The Global School of Systems Thinking" width="863" height="240"></a>
+    <nav class="nav" aria-label="Main">
+      <a href="index.html#services">Services</a>
+      <a href="health-check.html">Health Check</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#publications">Publications</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+<main>
+<section class="page-intro">
+  <div class="wrap stack">
+    <span class="eyebrow" id="tm-code-badge">Team Health Check</span>
+    <h1>Team Health Check</h1>
+    <hr class="rule">
+    <p class="lead">Rate 16 statements about your team or organisation. Your answers are anonymous: the screen shows only the combined results.</p>
+  </div>
+</section>
+
+<section id="tm-join" hidden>
+  <div class="wrap">
+    <form id="tm-join-form" class="join-card">
+      <label for="tm-code"><strong>Enter the session code shown on the screen</strong></label>
+      <div class="join-row">
+        <input id="tm-code" type="text" inputmode="text" autocapitalize="characters" autocomplete="off" maxlength="8" placeholder="e.g. K7MQ2P">
+        <button type="submit" class="btn btn-primary">Join</button>
+      </div>
+      <p id="tm-join-msg" class="muted small" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+
+<section id="tm-form-wrap" hidden style="padding-top:28px">
+  <div class="wrap">
+    <form id="tm-form" novalidate>
+      <p class="scale-key"><span>1 = strongly disagree</span><span>5 = strongly agree</span></p>
+      <div id="tm-statements" class="hc-list"></div>
+      <div class="hc-part" style="margin-top:36px">
+        <div class="hc-part-head">
+          <span class="eyebrow">Optional</span>
+          <h2>What keeps coming back?</h2>
+          <p>What is one problem that keeps coming back in your team? Your answer is shown anonymously on the screen. Please don't include names.</p>
+        </div>
+        <label class="visually-hidden" for="tm-recurring">One problem that keeps coming back</label>
+        <textarea id="tm-recurring" rows="3" maxlength="140" placeholder="For example: handovers between teams slip at every year-end."></textarea>
+      </div>
+      <div class="hc-submit">
+        <p id="tm-progress" class="hc-progress" aria-live="polite">0 of 16 answered</p>
+        <button type="submit" class="btn btn-primary" id="tm-send">Send my answers</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<section id="tm-thanks" hidden>
+  <div class="wrap stack">
+    <h2>Thank you. Your answers are in.</h2>
+    <p class="lead">Look up at the screen to see your team's combined results.</p>
+    <div class="card" id="tm-mine" style="max-width:640px"></div>
+    <p><a href="health-check.html">Take the full individual Health Check</a></p>
+  </div>
+</section>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <span>&copy; 2026 The Global School of Systems Thinking</span>
+    <nav aria-label="Footer">
+      <a href="index.html#services">Services</a>
+      <a href="health-check.html">Health Check</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#publications">Publications</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="mailto:globalsystemsthinking@gmail.com">globalsystemsthinking@gmail.com</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>
