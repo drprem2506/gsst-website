@@ -324,3 +324,14 @@ select:focus { border-color: var(--green); outline: none; }
 body.presenting .site-header, body.presenting .site-footer { display: none; }
 body.presenting { font-size: 1.15rem; }
 @media (max-width: 760px) { .ss-join { grid-template-columns: 1fr; gap: 28px; justify-items: start; } }
+
+/* team session guide */
+.steps { list-style: none; margin: 8px 0 4px; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.steps li { display: flex; gap: 14px; align-items: flex-start; background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 18px; }
+.step-n { flex: none; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--green); color: #fff; font-family: var(--display); font-size: 1.2rem; }
+.steps h3 { font-size: 1.25rem; margin-bottom: 4px; }
+.steps p { color: var(--muted); font-size: 0.98rem; }
+.prompts { margin: 0 0 12px; padding-left: 22px; display: grid; gap: 10px; }
+#ss-copy-msg { white-space: pre-line; }
+@media (max-width: 860px) { .steps { grid-template-columns: 1fr; } }
+@media print { body.presenting .ss-head .actions { display: none; } }

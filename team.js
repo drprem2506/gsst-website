@@ -33,6 +33,17 @@
   var ORDER = [];
   for (var k = 0; k < 4; k++) for (var a = 0; a < 4; a++) ORDER.push(a * 4 + k);
 
+  var ADVICE = {
+    patterns: ["Pick one problem that keeps coming back and chart how often it has happened over the past year.",
+               "Ask \u201cwhen did this happen before?\u201d at the start of problem-solving meetings."],
+    cause: ["Map how one recent decision affected other teams.",
+            "Ask \u201cand then what?\u201d three times before agreeing a fix."],
+    beliefs: ["List the assumptions behind one current plan and test the weakest.",
+              "Invite the most junior person in the room to speak first."],
+    conditions: ["Agree two or three early warning signs for your biggest risk and watch them.",
+                 "Pilot one change on a small scale before rolling it out."]
+  };
+
   function $(id) { return document.getElementById(id); }
   function esc(t) {
     return String(t).replace(/[&<>"']/g, function (c) {
@@ -215,6 +226,16 @@
       $("ss-agree").innerHTML = list(bySd.slice(0, 3));
       $("ss-differ").innerHTML = list(bySd.slice(-3).reverse());
 
+      var lowArea = AREAS[low];
+      $("ss-discuss").innerHTML =
+        "<ol class=\"prompts\">" +
+        "<li><strong>Where our views differ most:</strong> why might people see these statements so differently? What does each side notice that the other might not?</li>" +
+        "<li><strong>Our lowest area, " + esc(lowArea.name.toLowerCase()) + ":</strong> where do we see this in our day-to-day work?</li>" +
+        "<li><strong>What keeps coming back:</strong> pick one. When did it happen before, and what usually comes just before it?</li>" +
+        "<li><strong>One step:</strong> what is one small thing we will try in the next month?</li></ol>" +
+        "<p class=\"muted\">Ideas to try for " + esc(lowArea.name.toLowerCase()) + ":</p><ul class=\"tips\">" +
+        ADVICE[lowArea.id].map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ul>";
+
       var rec = d.recurring || [];
       $("ss-recurring").innerHTML = rec.length ? rec.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") :
         "<li class=\"muted\">No answers yet.</li>";
@@ -228,6 +249,16 @@
       open(c);
     });
     $("ss-show").addEventListener("click", function () { showResults(true); });
+    $("ss-print").addEventListener("click", function () { try { window.print(); } catch (e) { /* unavailable */ } });
+    $("ss-copy").addEventListener("click", function () {
+      var msg = "Please take our 4-minute Team Health Check. It is anonymous: only the combined results are shown.\n" +
+                joinUrl(code) + "\nSession code: " + code;
+      var out = $("ss-copy-msg");
+      try {
+        navigator.clipboard.writeText(msg).then(function () { out.textContent = "Invite copied. Paste it into your chat or email."; },
+          function () { out.textContent = msg; });
+      } catch (e) { out.textContent = msg; }
+    });
     $("ss-hide").addEventListener("click", function () { showResults(false); });
     $("ss-end").addEventListener("click", function () {
       if (timer) clearInterval(timer);
