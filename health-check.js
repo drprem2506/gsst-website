@@ -406,7 +406,7 @@
         "<button type=\"button\" class=\"btn btn-ghost\" id=\"hc-retake\">Retake the Health Check</button>" +
         "<a class=\"btn btn-ghost\" href=\"index.html#services\">See our services</a>" +
       "</div>" +
-      "<p class=\"muted small\">" + (r.shared ? "Your anonymous answers were added to GSST's research. No name or contact details were collected." :
+      "<p class=\"muted small\">" + (r.shared ? "Your anonymous answers were added to the Thinking Smarter community's shared learning. No name or contact details were collected." :
         "You chose not to share your answers. They stay on your device.") + " <a href=\"privacy.html\">Privacy note</a></p>";
 
     var dash = document.getElementById("hc-dash");
