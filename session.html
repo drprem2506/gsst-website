@@ -42,6 +42,14 @@
       <li><span class="step-n">2</span><div><h3>Invite your team</h3><p>In a room, put this page on the screen so people can scan the QR code. Online, copy the invite and paste it into your chat or email.</p></div></li>
       <li><span class="step-n">3</span><div><h3>Discuss the results</h3><p>Once at least three people have answered (about 4 minutes), click Show results. Discussion questions appear with them.</p></div></li>
     </ol>
+    <div class="card ss-tips">
+      <h3>Before you start: three ground rules</h3>
+      <ol class="tips">
+        <li><strong>There are no right answers.</strong> Different views are the most useful part of the discussion.</li>
+        <li><strong>Talk about the system, not the people.</strong> Ask &ldquo;what in how we work leads to this?&rdquo;, not &ldquo;whose fault is it?&rdquo;</li>
+        <li><strong>Don&rsquo;t try to guess who answered what.</strong> It is natural to wonder, but second-guessing makes people less honest, and honest answers are what lead to real improvements. The check is built so that no one, including the person running it, can tell: results appear only once at least three people have answered, and new answers are added in groups.</li>
+      </ol>
+    </div>
     <p class="muted">Works best for groups of up to 30 people. For larger groups, run a separate session for each team or table.</p>
     <div class="actions"><button type="button" class="btn btn-primary" id="ss-new">Start a session</button></div>
     <form id="ss-open-form" class="join-card" style="margin-top:12px">
@@ -83,6 +91,7 @@
       <div class="ss-head">
         <h1>Our team's results</h1>
         <p class="ss-count-inline">Session <strong id="ss-code-small"></strong> &middot; <strong id="ss-count-small">0</strong> responses</p>
+        <p class="muted small" id="ss-pending" aria-live="polite"></p>
         <div class="actions no-print">
           <button type="button" class="btn btn-ghost" id="ss-hide">Back to joining</button>
           <button type="button" class="btn btn-ghost" id="ss-print">Print or save as PDF</button>

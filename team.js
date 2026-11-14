@@ -137,7 +137,16 @@
 
   /* ================= facilitator live screen ================= */
   function facilitator() {
-    var code = null, timer = null, last = null, showing = false;
+    var code = null, timer = null, last = null, showing = false, drawnN = 0;
+    // Results only change once at least MIN_FOR_TEAM new answers have come in, so no single person's answers
+    // can be worked out by watching the screen change after they submit.
+    function maybeDraw(d) {
+      if (!d || d.n < MIN_FOR_TEAM) return;
+      if (drawnN === 0 || d.n - drawnN >= MIN_FOR_TEAM) { drawnN = d.n; draw(d); }
+      var waiting = d.n - drawnN;
+      $("ss-pending").textContent = waiting > 0 ?
+        "New answers are added in groups of " + MIN_FOR_TEAM + ", so no single answer can be spotted." : "";
+    }
     var CHARS = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
 
     function newCode() {
@@ -153,6 +162,7 @@
     }
 
     function open(c) {
+      drawnN = 0; $("ss-pending").textContent = "";
       code = c;
       store("gsst-last-session", code);
       $("ss-start").hidden = true;
@@ -177,12 +187,11 @@
         .then(function (d) {
           last = d;
           $("ss-count").textContent = d.n;
-          $("ss-count-small").textContent = d.n;
           var ready = d.n >= MIN_FOR_TEAM;
           $("ss-show").disabled = !ready;
           $("ss-wait").textContent = ready ? "Ready to show results." :
             "Results appear once at least " + MIN_FOR_TEAM + " people have answered.";
-          if (showing && ready) draw(d);
+          if (showing && ready) maybeDraw(d);
           $("ss-status").textContent = "Updated " + new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
         })
         .catch(function () { $("ss-status").textContent = "Cannot reach the results right now. Retrying…"; });
@@ -193,7 +202,7 @@
       $("ss-join-view").hidden = on;
       $("ss-results-view").hidden = !on;
       document.body.classList.toggle("presenting", on);
-      if (on && last && last.n >= MIN_FOR_TEAM) draw(last);
+      if (on && last) maybeDraw(last);
     }
 
     function dist(d) {
@@ -204,6 +213,7 @@
     }
 
     function draw(d) {
+      $("ss-count-small").textContent = d.n;
       var areas = AREAS.map(function (a) { return { name: a.name, v: d.areas[a.id] }; });
       var low = areas.reduce(function (m, x, i) { return x.v < areas[m].v ? i : m; }, 0);
       $("ss-areas").innerHTML = areas.map(function (a, i) {
@@ -262,7 +272,7 @@
     $("ss-hide").addEventListener("click", function () { showResults(false); });
     $("ss-end").addEventListener("click", function () {
       if (timer) clearInterval(timer);
-      code = null; showing = false;
+      code = null; showing = false; drawnN = 0;
       document.body.classList.remove("presenting");
       $("ss-live").hidden = true; $("ss-start").hidden = false;
     });
