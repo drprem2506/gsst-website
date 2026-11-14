@@ -368,3 +368,5 @@ body.presenting { font-size: 1.15rem; }
 .ss-why { margin: 28px 0 8px; }
 .ss-why h2 { margin-bottom: 14px; }
 .ss-tips { margin-top: 24px; }
+
+.hc-subtitle { margin: -6px 0 0; font-size: 1.25rem; font-weight: 600; color: var(--green-deep); }
