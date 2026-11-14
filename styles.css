@@ -370,3 +370,8 @@ body.presenting { font-size: 1.15rem; }
 .ss-tips { margin-top: 24px; }
 
 .hc-subtitle { margin: -6px 0 0; font-size: 1.25rem; font-weight: 600; color: var(--green-deep); }
+
+/* Schools: student short (vertical video) */
+.short-lead { display: grid; grid-template-columns: 300px 1fr; gap: 40px; align-items: center; margin-top: 48px; }
+.short-frame video { width: 100%; height: auto; border-radius: 16px; background: #121a26; display: block; }
+@media (max-width: 720px) { .short-lead { grid-template-columns: 1fr; } .short-frame { max-width: 300px; margin: 0 auto; } }
