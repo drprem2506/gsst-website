@@ -422,3 +422,4 @@ body.presenting { font-size: 1.15rem; }
 .founder-note { font-size: 1.15rem; line-height: 1.6; font-style: italic; color: var(--green-deep); }
 .reflect { padding: 48px 0 0; }
 .reflect-q { max-width: 860px; margin: 0; padding: 4px 0 4px 22px; border-left: 4px solid var(--rule); font-size: 1.2rem; line-height: 1.6; }
+#health-check-invite .invite { margin-top: 40px; }
