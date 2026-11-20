@@ -406,3 +406,8 @@ body.presenting { font-size: 1.15rem; }
 .founder h2 .role { display: block; font-size: 0.5em; letter-spacing: 0.06em; color: var(--muted, #5b6b66); margin-top: 6px; }
 .creds { padding: 0; background: none; border: 0; border-radius: 0; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 8px; }
 @media (max-width: 720px) { .creds { grid-template-columns: 1fr; gap: 18px; } }
+/* Hero and intro text: one size, one colour, even spacing */
+.hero .stack p, .hero .lead { font-size: 1.15rem; line-height: 1.6; color: var(--ink, inherit); margin: 0; }
+.paths-intro { font-size: 1.15rem; line-height: 1.6; }
+.hero { padding-bottom: 18px; }
+@media (max-width: 900px) { .hero { padding-bottom: 32px; } }
