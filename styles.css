@@ -411,3 +411,4 @@ body.presenting { font-size: 1.15rem; }
 .paths-intro { font-size: 1.15rem; line-height: 1.6; }
 .hero { padding-bottom: 18px; }
 @media (max-width: 900px) { .hero { padding-bottom: 32px; } }
+.hero .stack p.lead { color: var(--green-deep); font-weight: 600; }
