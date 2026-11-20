@@ -412,3 +412,13 @@ body.presenting { font-size: 1.15rem; }
 .hero { padding-bottom: 18px; }
 @media (max-width: 900px) { .hero { padding-bottom: 32px; } }
 .hero .stack p.lead { color: var(--green-deep); font-weight: 600; }
+/* Quick fixes: consistent intro text, key line only on home, invite buttons under text, SO definition below pillars */
+.lead { font-size: 1.15rem; line-height: 1.6; color: var(--ink); }
+.hero .stack p.lead { color: var(--ink); font-weight: 400; }
+.hero .stack p.key { color: var(--green-deep); font-weight: 600; }
+.invite { grid-template-columns: 1fr; }
+.invite .actions { justify-content: flex-start; }
+.so-def { max-width: 860px; margin: 24px 0 0; padding: 18px 22px; border-left: 4px solid var(--green); background: #fff; border-radius: 6px; font-size: 1rem; }
+.founder-note { font-size: 1.15rem; line-height: 1.6; font-style: italic; color: var(--green-deep); }
+.reflect { padding: 48px 0 0; }
+.reflect-q { max-width: 860px; margin: 0; padding: 4px 0 4px 22px; border-left: 4px solid var(--rule); font-size: 1.2rem; line-height: 1.6; }
