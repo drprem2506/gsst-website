@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en-SG">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The GSST Thinking Smarter Model | GSST</title>
+<meta name="description" content="Five questions that take you from what happened to where one small change could make the biggest difference.">
+<meta property="og:title" content="The GSST Thinking Smarter Model | GSST">
+<meta property="og:description" content="Five questions that take you from what happened to where one small change could make the biggest difference.">
+<meta property="og:image" content="assets/video-poster.jpg">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&amp;family=Source+Sans+3:ital,wght@0,400;0,600;1,400&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=20261120d">
+</head>
+<body id="top">
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html"><img src="assets/logo.png" alt="The Global School of Systems Thinking" width="863" height="240"></a>
+    <nav class="nav" aria-label="Main">
+      <a href="index.html#about">About</a>
+      <a href="index.html#services">Organisations</a>
+      <a href="schools.html">Schools</a>
+      <a href="model.html" aria-current="page">Our Model</a>
+      <a href="health-check.html">Health Check</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+<main>
+<style>
+.mm { display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr); gap:28px; align-items:start; }
+.mm .map { background:#fff; border:1px solid var(--line); border-radius:14px; padding:8px; }
+.mm svg { width:100%; height:auto; display:block; }
+.mm .node { cursor:pointer; outline:none; }
+.mm .node:hover .shape, .mm .node:focus .shape { stroke-width:4; }
+.mm .node.active .shape { stroke:var(--rule); stroke-width:4; }
+.mm .node text { pointer-events:none; font-family:var(--body); }
+.mm .ntitle { font-family:var(--display) !important; font-size:18px; font-weight:600; letter-spacing:.03em; text-transform:uppercase; }
+.mm .nq { font-size:14px; fill:#2d3b36; }
+.mm .panel { background:#fff; border:1px solid var(--line); border-left:4px solid var(--green); border-radius:0 12px 12px 0; padding:24px 26px; position:sticky; top:16px; }
+.mm .panel h2 { font-size:1.7rem; margin:4px 0; }
+.mm .panel .q { font-size:1.2rem; color:var(--green-deep); font-weight:600; margin:6px 0 14px; }
+.mm .panel h3 { font-family:var(--display); font-weight:500; text-transform:uppercase; letter-spacing:.08em; font-size:.85rem; color:var(--green); margin:18px 0 6px; }
+.mm .panel ul { margin:0; padding-left:20px; }
+.mm .panel .roots { margin-top:18px; padding-top:12px; border-top:1px solid var(--line); font-size:.9rem; color:var(--muted); }
+.mm .navb { display:flex; gap:10px; margin-top:20px; flex-wrap:wrap; }
+.mm .navb button { font:inherit; font-size:.95rem; padding:8px 14px; border-radius:8px; border:1px solid var(--green); background:#fff; color:var(--green-deep); cursor:pointer; }
+.mm .navb button.primary { background:var(--green); color:#fff; }
+.mm .hint { font-size:.9rem; color:var(--muted); text-align:center; margin:6px 0 4px; }
+.gaps { list-style:none; padding:0; margin:18px 0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+.gaps li { background:#fff; border:1px solid var(--line); border-top:4px solid var(--green); border-radius:8px; padding:18px 20px; }
+.gaps strong { display:block; font-family:var(--display); text-transform:uppercase; letter-spacing:.04em; font-weight:500; font-size:1.1rem; margin-bottom:6px; }
+@media (max-width:860px) { .mm { grid-template-columns:1fr; } .mm .panel { position:static; } .gaps { grid-template-columns:1fr; } }
+</style>
+<section class="page-intro">
+  <div class="wrap stack">
+    <span class="eyebrow">Every system creates a story</span>
+    <h1>The GSST Thinking Smarter Model</h1>
+    <p class="lead">Five questions that take you from what happened to where one small change could make the biggest difference. Start with the story, and follow the map round. Click any part to find out more.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap mm">
+    <div class="map">
+      <svg id="map" viewBox="0 0 640 640" role="group" aria-label="The Thinking Smarter Model: five steps around the idea that every system creates a story">
+        <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1L9 5L1 9z" fill="#9fb3aa"/></marker></defs>
+        <g id="ring"></g><g id="nodes"></g>
+      </svg>
+      <p class="hint">The arrows run round the map: each new story starts the cycle again.</p>
+    </div>
+    <aside class="panel" id="panel" aria-live="polite"></aside>
+  </div>
+</section>
+
+<section class="band" id="deeper">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Going deeper, together</span>
+      <h2>The map is where the learning begins</h2>
+      <p>In our facilitated sessions, participants apply the Thinking Smarter Model to real issues from their own organisation. Working together, they often discover gaps that are hard to see alone:</p>
+    </div>
+    <ul class="gaps">
+      <li><strong>What we observe</strong>The patterns a team misses because it is too close to them.</li>
+      <li><strong>What we know, and don't know</strong>The assumptions and blind spots a group shares without realising it.</li>
+      <li><strong>How we act</strong>The distance between what we intend and what we actually do.</li>
+    </ul>
+    <p style="margin-bottom:18px">These gaps are where the most valuable learning happens.</p>
+    <div class="actions"><a class="btn btn-primary" href="mailto:globalsystemsthinking@gmail.com?subject=Thinking%20Smarter%20session">Talk to us about a session</a><a class="btn btn-ghost" href="index.html#services">See our programmes</a></div>
+  </div>
+</section>
+<script>
+const STEPS = [
+  { id:"centre", title:"Every system creates a story", short:["Every system","creates a story"],
+    q:"Why do the same problems keep coming back, whoever is involved?",
+    body:"Behind every recurring problem is a structure: the way things are connected, measured and rewarded. Change the people and the story often repeats. Change the structure and the story can change.",
+    signs:["Different people end up behaving the same way in the same role.","Fixes work for a while, then the problem returns.","Everyone is working hard, yet the result is one nobody wants."],
+    tryit:["Pick one problem that keeps coming back, and follow the five questions round the map."],
+    roots:"The idea that a system's structure drives its behaviour runs through all the systems thinking pioneers: Jay Forrester, Donella Meadows, Peter Senge and Daniel Kim, among others." },
+  { id:"story", sq:["What happened?"], n:1, title:"The story", q:"What happened?", col:"#f4b2a1",
+    body:"Start with what people actually experienced: the events, in plain words. A story is easier to share than a diagnosis, and it keeps everyone grounded in what really happened before anyone explains it away.",
+    signs:["The same complaint comes up at every meeting.","Problems are explained as bad luck, or as one difficult person.","People tell different versions of the same event."],
+    tryit:["Write the story in three sentences: who was involved, what happened, and what happened next.","Ask two people from different parts of the organisation to tell it too."],
+    example:'Lina notices the same near miss again, and tells her supervisor. <em>The report that travels up</em>',
+    roots:"Events are the visible tip of the iceberg model used by Peter Senge and Daniel Kim." },
+  { id:"pattern", sq:["What keeps", "happening?"], n:2, title:"The pattern", q:"What keeps happening, and what has been building up?", col:"#f9d48a",
+    body:"A single event can mislead. A pattern over weeks, months or years shows what keeps repeating. Many problems that seem sudden have been building up quietly, like water filling a bathtub until it overflows.",
+    signs:["“This again.”","A crisis that “came out of nowhere”, but had warning signs.","Things improve for a while, then slide back."],
+    tryit:["Sketch a simple line over time: is it rising, falling, or swinging up and down?","Ask what is filling up (complaints, fatigue, unreported issues) and what drains it."],
+    example:'Mighty the mouse kept records, and saw the rain always came on a Thursday. <a href="schools.html">Tiny Thinks Smarter</a>',
+    habit:"Notice patterns over time",
+    roots:"Behaviour-over-time graphs (Waters Center for Systems Thinking); stocks, flows and delays (Jay Forrester, Donella Meadows)." },
+  { id:"structure", sq:["What keeps", "it going?"], n:3, title:"The structure", q:"What keeps it going?", col:"#9fd8e6",
+    body:"Structure is more than an organisation chart. Look at three things: what feeds what, what builds up slowly, and how information and rules shape decisions.",
+    subs:[
+      ["Loops", "What feeds what? Follow each part as it goes up ↑ or down ↓, until it comes back round. Some loops push things further in the same direction; others pull them back."],
+      ["Build-ups and delays", "What accumulates slowly, such as trust, skills, debts or hidden problems? Delays explain why results arrive long after the decisions that caused them."],
+      ["Information and rules", "Who hears what, and how filtered is it by the time it arrives? What is measured, rewarded and punished? Who decides?"]
+    ],
+    signs:["Good people in the same seat behave in the same way.","A fix in one place creates a problem somewhere else.","News is softened, or reshaped, as it travels up."],
+    tryit:["Draw four parts of the problem in a circle, and mark each ↑ or ↓.","List what reaches the top, and what never does."],
+    example:'The cost of passing bad news up rises, so concerns are softened, problems go unseen, and targets tighten. <em>The report that travels up</em>',
+    habit:"See cause and effect",
+    roots:"Feedback loops and system dynamics (Jay Forrester); stocks, flows and information (Donella Meadows); causal loops and recurring storylines (Peter Senge, Daniel Kim); relationships and parts and wholes (Derek Cabrera)." },
+  { id:"beliefs", sq:["What holds it", "in place?"], n:4, title:"Beliefs and purpose", q:"What holds it in place, and what does the system really reward?", col:"#c9b6e8",
+    body:"Beliefs shape what people notice and what they think is possible. A system's real purpose shows in how it behaves, not in what it says. If someone watched your organisation for a month, what would they say it is for?",
+    signs:["“That's just how things are done here.”","Stated values and who gets promoted point in different directions.","Some perspectives are never heard."],
+    tryit:["Ask: whose perspective is missing from this story?","Ask: what happened to the last person who spoke up?"],
+    example:'Promoted for managing upwards, a head of department controls what the board sees. <em>What happened to the last person who spoke up?</em>',
+    habit:"Question beliefs",
+    roots:"Mental models (Peter Senge); perspectives (Derek Cabrera); purpose deduced from behaviour (Donella Meadows, <em>Thinking in Systems</em>)." },
+  { id:"change", sq:["Where can one", "change help most?"], n:5, title:"The small change", q:"Where could one change make the biggest difference?", col:"#a6dcbc",
+    body:"Some changes do far more than others. Changing a measure, a rule or a flow of information often shifts behaviour more than replacing people or working harder. Start small, test it, and watch what happens next.",
+    signs:["A good change makes the next good action easier.","It touches a loop, a rule or what gets measured, not only the people.","It is small enough to try safely, and to learn from."],
+    tryit:["Ask “and then what?” at least twice before acting.","Try it on a small scale first, and agree how you will know it is working."],
+    example:'Measure and reward issues raised early and fixed, not the fewest incidents. The same loop starts turning the other way.',
+    habit:"Prepare for changing conditions",
+    roots:"Leverage points (Donella Meadows); testing ideas and considering consequences (Waters Center for Systems Thinking)." }
+];
+
+const NS = "http://www.w3.org/2000/svg";
+const C = 320, R = 215;
+const nodesG = document.getElementById("nodes"), ringG = document.getElementById("ring");
+function el(name, attrs, parent) { const e = document.createElementNS(NS, name); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }
+function pos(i) { const a = (-90 + i * 72) * Math.PI / 180; return [C + R * Math.cos(a), C + R * Math.sin(a)]; }
+
+// ring arrows between steps
+for (let i = 0; i < 5; i++) {
+  const a0 = (-90 + i * 72 + 20) * Math.PI / 180, a1 = (-90 + (i + 1) * 72 - 20) * Math.PI / 180;
+  const p0 = [C + R * Math.cos(a0), C + R * Math.sin(a0)], p1 = [C + R * Math.cos(a1), C + R * Math.sin(a1)];
+  el("path", { d:`M${p0[0]} ${p0[1]} A${R} ${R} 0 0 1 ${p1[0]} ${p1[1]}`, fill:"none", stroke:"#9fb3aa", "stroke-width":3, "marker-end":"url(#ah)" }, ringG);
+}
+// spokes
+for (let i = 0; i < 5; i++) { const [x, y] = pos(i); el("line", { x1:C, y1:C, x2:C + (x - C) * .55, y2:C + (y - C) * .55, stroke:"#d9e3dd", "stroke-width":2 }, ringG); }
+
+function wrap(text, max) { const w = text.split(" "), out = []; let cur = ""; for (const t of w) { if ((cur + " " + t).trim().length > max) { out.push(cur); cur = t; } else cur = (cur + " " + t).trim(); } if (cur) out.push(cur); return out; }
+
+const nodeEls = {};
+STEPS.forEach((s, idx) => {
+  const g = el("g", { class:"node", tabindex:0, role:"button", "aria-label":(s.n ? s.n + ". " : "") + s.title + ": " + s.q }, nodesG);
+  if (s.id === "centre") {
+    el("circle", { class:"shape", cx:C, cy:C, r:100, fill:"#1f5c40", stroke:"#1f5c40", "stroke-width":2 }, g);
+    s.short.forEach((ln, j) => { const t = el("text", { x:C, y:C - 10 + j * 26, "text-anchor":"middle", class:"ntitle", fill:"#fff" }, g); t.textContent = ln; });
+    const t = el("text", { x:C, y:C + 52, "text-anchor":"middle", "font-size":14, fill:"#cfe8da" }, g); t.textContent = "start here";
+  } else {
+    const [x, y] = pos(s.n - 1);
+    el("circle", { class:"shape", cx:x, cy:y, r:82, fill:s.col, stroke:"#ffffff", "stroke-width":2 }, g);
+    const num = el("text", { x:x, y:y - 40, "text-anchor":"middle", "font-size":15, fill:"#2d3b36", "font-weight":600 }, g); num.textContent = s.n;
+    const tl = wrap(s.title, 12);
+    tl.forEach((ln, j) => { const t = el("text", { x:x, y:y - 14 + j * 22, "text-anchor":"middle", class:"ntitle", fill:"#1d2925" }, g); t.textContent = ln; });
+    const ql = s.sq;
+    ql.forEach((ln, j) => { const t = el("text", { x:x, y:y + 14 + (tl.length - 1) * 22 + j * 17, "text-anchor":"middle", class:"nq" }, g); t.textContent = ln; });
+  }
+  g.addEventListener("click", () => show(idx));
+  g.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); show(idx); } });
+  nodeEls[idx] = g;
+});
+
+const panel = document.getElementById("panel");
+function list(items) { return "<ul>" + items.map(i => "<li>" + i + "</li>").join("") + "</ul>"; }
+function show(i) {
+  const s = STEPS[i];
+  Object.values(nodeEls).forEach(n => n.classList.remove("active")); nodeEls[i].classList.add("active");
+  let h = `<div class="eyebrow">${s.n ? "Step " + s.n + " of 5" : "The big idea"}</div><h2>${s.title}</h2><p class="q">${s.q}</p><p>${s.body}</p>`;
+  if (s.subs) h += "<h3>Look at three things</h3>" + list(s.subs.map(([a, b]) => `<strong>${a}:</strong> ${b}`));
+  h += "<h3>Signs you may notice</h3>" + list(s.signs);
+  h += "<h3>Try this</h3>" + list(s.tryit);
+  if (s.example) h += `<h3>Example</h3><p>${s.example}</p>`;
+  if (s.habit) h += `<h3>Habit</h3><p>${s.habit}. <a href="health-check.html">See how your organisation does in the Health Check</a></p>`;
+  h += `<p class="roots"><strong>Rooted in:</strong> ${s.roots}</p>`;
+  const prev = i > 0 ? `<button data-go="${i - 1}">&larr; Back</button>` : "";
+  const next = i < STEPS.length - 1 ? `<button class="primary" data-go="${i + 1}">Next: ${STEPS[i + 1].title} &rarr;</button>` : `<button class="primary" data-go="1">Back to the story: a new cycle &#8635;</button>`;
+  h += `<div class="navb">${prev}${next}</div>`;
+  panel.innerHTML = h;
+  panel.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => show(+b.dataset.go)));
+}
+show(0);
+</script>
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <span>&copy; 2026 The Global School of Systems Thinking. All rights reserved. The GSST Thinking Smarter Model, the Thinking Smarter Health Check and all content on this site may not be reproduced without permission.</span>
+    <nav aria-label="Footer">
+      <a href="index.html#about">About</a>
+      <a href="index.html#services">Organisations</a>
+      <a href="schools.html">Schools</a>
+      <a href="model.html">Our Model</a>
+      <a href="health-check.html">Health Check</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="mailto:globalsystemsthinking@gmail.com">globalsystemsthinking@gmail.com</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>
