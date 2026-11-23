@@ -423,3 +423,7 @@ body.presenting { font-size: 1.15rem; }
 .reflect { padding: 48px 0 0; }
 .reflect-q { max-width: 860px; margin: 0; padding: 4px 0 4px 22px; border-left: 4px solid var(--rule); font-size: 1.2rem; line-height: 1.6; }
 #health-check-invite .invite { margin-top: 40px; }
+.queue { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:32px; align-items:center; margin-top:12px; }
+.queue-loop { width:100%; height:auto; max-width:520px; }
+.queue-loop text { font-family: var(--body); }
+@media (max-width: 860px) { .queue { grid-template-columns:1fr; } }
