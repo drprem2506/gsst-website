@@ -61,6 +61,7 @@
     <span class="eyebrow">Every system creates a story</span>
     <h1>The GSST Thinking Smarter Model</h1>
     <p class="lead">Five questions that take you from what happened to where one small change could make the biggest difference. Start with the story, and follow the map round. Click any part to find out more.</p>
+    <p>Thinking smarter is a discipline, built through four practices: notice patterns, see connections, question beliefs and test small changes.</p>
   </div>
 </section>
 
@@ -117,7 +118,7 @@ const STEPS = [
     signs:["Plenty of opinions and impressions, but few figures or records.","“This again.”","A crisis that “came out of nowhere”, but had warning signs.","Things improve for a while, then slide back."],
     tryit:["Check the facts: where do the figures come from, and what is missing or filtered?","Sketch a simple line over time: is it rising, falling, or swinging up and down?","Ask what is filling up (complaints, fatigue, unreported issues) and what drains it.",'<a href="pattern.html">Try the pattern explorer: see where your figures are heading if nothing changes</a>'],
     example:'Mighty the mouse kept records, and saw the rain always came on a Thursday. <a href="schools.html">Tiny Thinks Smarter</a>',
-    habit:"Notice patterns over time",
+    habit:"Notice patterns",
     roots:"Behaviour-over-time graphs (Waters Center for Systems Thinking); stocks, flows and delays (Jay Forrester, Donella Meadows)." },
   { id:"structure", sq:["What keeps", "it going?"], n:3, title:"The structure", q:"What keeps it going?", col:"#9fd8e6",
     body:"Structure is more than an organisation chart. Look at three things: what feeds what, what builds up slowly, and how information and rules shape decisions.",
@@ -129,21 +130,27 @@ const STEPS = [
     signs:["Good people in the same seat behave in the same way.","A fix in one place creates a problem somewhere else.","News is softened, or reshaped, as it travels up."],
     tryit:["Draw four parts of the problem in a circle, and mark each ↑ or ↓.","List what reaches the top, and what never does."],
     example:'The cost of passing bad news up rises, so concerns are softened, problems go unseen, and targets tighten. <em>The report that travels up</em>',
-    habit:"See cause and effect",
+    habit:"See connections",
     roots:"Feedback loops and system dynamics (Jay Forrester); stocks, flows and information (Donella Meadows); causal loops and recurring storylines (Peter Senge, Daniel Kim); relationships and parts and wholes (Derek Cabrera)." },
   { id:"beliefs", sq:["What holds it", "in place?"], n:4, title:"Beliefs and purpose", q:"What holds it in place, and what does the system really reward?", col:"#c9b6e8",
     body:"Beliefs shape what people notice and what they think is possible. A system's real purpose shows in how it behaves, not in what it says. If someone watched your organisation for a month, what would they say it is for?",
     signs:["“That's just how things are done here.”","Stated values and who gets promoted point in different directions.","Some perspectives are never heard."],
     tryit:["Ask: whose perspective is missing from this story?","Ask: what happened to the last person who spoke up?"],
     example:'Promoted for managing upwards, a head of department controls what the board sees. <em>What happened to the last person who spoke up?</em>',
+    subsHead:"Look at three levels",
+    subs:[
+      ["Within me", "What do I believe, value or fear here? What am I telling myself, for example \u201cIf I speak up, I will be seen as disloyal\u201d?"],
+      ["Between us", "Which relationships, loyalties and power shape what people say and do? Who depends on whom?"],
+      ["In the system", "Which rules, measures and shared ideas about \u201chow things are done here\u201d keep it in place?"]
+    ],
     habit:"Question beliefs",
-    roots:"Mental models (Peter Senge); perspectives (Derek Cabrera); purpose deduced from behaviour (Donella Meadows, <em>Thinking in Systems</em>)." },
+    roots:"Levels of system, from the person to the whole (the Gestalt approach to organisation and system development); mental models (Peter Senge); perspectives (Derek Cabrera); purpose deduced from behaviour (Donella Meadows, <em>Thinking in Systems</em>)." },
   { id:"change", sq:["Where can one", "change help most?"], n:5, title:"The small change", q:"Where could one change make the biggest difference?", col:"#a6dcbc",
     body:"Some changes do far more than others. Changing a measure, a rule or a flow of information often shifts behaviour more than replacing people or working harder. Start small, test it, and watch what happens next.",
     signs:["A good change makes the next good action easier.","It touches a loop, a rule or what gets measured, not only the people.","It is small enough to try safely, and to learn from."],
     tryit:["Ask “and then what?” at least twice before acting.","Try it on a small scale first, and agree how you will know it is working."],
     example:'Measure and reward issues raised early and fixed, not the fewest incidents. The same loop starts turning the other way.',
-    habit:"Prepare for changing conditions",
+    habit:"Test small changes",
     roots:"Leverage points (Donella Meadows); testing ideas and considering consequences (Waters Center for Systems Thinking)." }
 ];
 
@@ -191,11 +198,11 @@ function show(i) {
   const s = STEPS[i];
   Object.values(nodeEls).forEach(n => n.classList.remove("active")); nodeEls[i].classList.add("active");
   let h = `<div class="eyebrow">${s.n ? "Step " + s.n + " of 5" : "The big idea"}</div><h2>${s.title}</h2><p class="q">${s.q}</p><p>${s.body}</p>`;
-  if (s.subs) h += "<h3>Look at three things</h3>" + list(s.subs.map(([a, b]) => `<strong>${a}:</strong> ${b}`));
+  if (s.subs) h += "<h3>" + (s.subsHead || "Look at three things") + "</h3>" + list(s.subs.map(([a, b]) => `<strong>${a}:</strong> ${b}`));
   h += "<h3>Signs you may notice</h3>" + list(s.signs);
   h += "<h3>Try this</h3>" + list(s.tryit);
   if (s.example) h += `<h3>Example</h3><p>${s.example}</p>`;
-  if (s.habit) h += `<h3>Habit</h3><p>${s.habit}. <a href="health-check.html">See how your organisation does in the Health Check</a></p>`;
+  if (s.habit) h += `<h3>Practice</h3><p>${s.habit}. <a href="health-check.html">See how your organisation does in the Health Check</a></p>`;
   h += `<p class="roots"><strong>Rooted in:</strong> ${s.roots}</p>`;
   const prev = i > 0 ? `<button data-go="${i - 1}">&larr; Back</button>` : "";
   const next = i < STEPS.length - 1 ? `<button class="primary" data-go="${i + 1}">Next: ${STEPS[i + 1].title} &rarr;</button>` : `<button class="primary" data-go="1">Back to the story: a new cycle &#8635;</button>`;

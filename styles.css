@@ -427,3 +427,4 @@ body.presenting { font-size: 1.15rem; }
 .queue-loop { width:100%; height:auto; max-width:520px; }
 .queue-loop text { font-family: var(--body); }
 @media (max-width: 860px) { .queue { grid-template-columns:1fr; } }
+.help-box { border-left: 4px solid var(--rule); border-radius: 0 10px 10px 0; }
