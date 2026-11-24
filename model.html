@@ -134,18 +134,12 @@ const STEPS = [
     habit:"See connections",
     roots:"Feedback loops and system dynamics (Jay Forrester); stocks, flows and information (Donella Meadows); causal loops and recurring storylines (Peter Senge, Daniel Kim); relationships and parts and wholes (Derek Cabrera)." },
   { id:"beliefs", sq:["What holds it", "in place?"], n:4, title:"Beliefs and purpose", q:"What holds it in place, and what does the system really reward?", col:"#c9b6e8",
-    body:"Beliefs shape what people notice and what they think is possible. A system's real purpose shows in how it behaves, not in what it says. If someone watched your organisation for a month, what would they say it is for?",
+    body:"Beliefs shape what people notice and what they think is possible. A system's real purpose shows in how it behaves, not in what it says. If someone watched your organisation for a month, what would they say it is for? In our workshops, we look at what holds a problem in place within each person, between people and across the system, and at what is hard to see, taken for granted or kept hidden.",
     signs:["“That's just how things are done here.”","Stated values and who gets promoted point in different directions.","Some perspectives are never heard."],
     tryit:["Ask: whose perspective is missing from this story?","Ask: what happened to the last person who spoke up?"],
     example:'Promoted for managing upwards, a head of department controls what the board sees.',
-    subsHead:"Look at three levels",
-    subs:[
-      ["Within me", "What do I believe, value or fear here? What am I telling myself, for example \u201cIf I speak up, I will be seen as disloyal\u201d?"],
-      ["Between us", "Which relationships, loyalties and power shape what people say and do? Who depends on whom?"],
-      ["In the system", "Which rules, measures and shared ideas about \u201chow things are done here\u201d keep it in place?"]
-    ],
     habit:"Question beliefs",
-    roots:"Levels of system, from the person to the whole (the Gestalt approach to organisation and system development); mental models (Peter Senge); perspectives (Derek Cabrera); purpose deduced from behaviour (Donella Meadows, <em>Thinking in Systems</em>)." },
+    roots:"Levels of system, from the person to the whole (the Gestalt approach to organisation and system development); mental models (Peter Senge); perspectives (Derek Cabrera); culture and taken-for-granted assumptions (Edgar Schein); the undiscussable (Chris Argyris); purpose deduced from behaviour (Donella Meadows, <em>Thinking in Systems</em>)." },
   { id:"change", sq:["Where can one", "change help most?"], n:5, title:"The small change", q:"Where could one change make the biggest difference?", col:"#a6dcbc",
     body:"Some changes do far more than others. Changing a measure, a rule or a flow of information often shifts behaviour more than replacing people or working harder. Start small, test it, and watch what happens next.",
     signs:["A good change makes the next good action easier.","It touches a loop, a rule or what gets measured, not only the people.","It is small enough to try safely, and to learn from."],
@@ -200,6 +194,7 @@ function show(i) {
   Object.values(nodeEls).forEach(n => n.classList.remove("active")); nodeEls[i].classList.add("active");
   let h = `<div class="eyebrow">${s.n ? "Step " + s.n + " of 5" : "The big idea"}</div><h2>${s.title}</h2><p class="q">${s.q}</p><p>${s.body}</p>`;
   if (s.subs) h += "<h3>" + (s.subsHead || "Look at three things") + "</h3>" + list(s.subs.map(([a, b]) => `<strong>${a}:</strong> ${b}`));
+  if (s.hidden) h += "<h3>Three kinds of hidden system</h3>" + list(s.hidden.map(([a, b]) => `<strong>${a}:</strong> ${b}`)) + `<p>${s.hiddenNote}</p>`;
   h += "<h3>Signs you may notice</h3>" + list(s.signs);
   h += "<h3>Try this</h3>" + list(s.tryit);
   if (s.example) h += `<h3>Example</h3><p>${s.example}</p>`;
