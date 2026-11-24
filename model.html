@@ -157,12 +157,10 @@ function pos(i) { const a = (-90 + i * 72) * Math.PI / 180; return [C + R * Math
 
 // ring arrows between steps
 for (let i = 0; i < 5; i++) {
-  const a0 = (-90 + i * 72 + 20) * Math.PI / 180, a1 = (-90 + (i + 1) * 72 - 20) * Math.PI / 180;
+  const a0 = (-90 + i * 72 + 26) * Math.PI / 180, a1 = (-90 + (i + 1) * 72 - 28) * Math.PI / 180;
   const p0 = [C + R * Math.cos(a0), C + R * Math.sin(a0)], p1 = [C + R * Math.cos(a1), C + R * Math.sin(a1)];
   el("path", { d:`M${p0[0]} ${p0[1]} A${R} ${R} 0 0 1 ${p1[0]} ${p1[1]}`, fill:"none", stroke:"#9fb3aa", "stroke-width":3, "marker-end":"url(#ah)" }, ringG);
 }
-// spokes
-for (let i = 0; i < 5; i++) { const [x, y] = pos(i); el("line", { x1:C, y1:C, x2:C + (x - C) * .55, y2:C + (y - C) * .55, stroke:"#d9e3dd", "stroke-width":2 }, ringG); }
 
 function wrap(text, max) { const w = text.split(" "), out = []; let cur = ""; for (const t of w) { if ((cur + " " + t).trim().length > max) { out.push(cur); cur = t; } else cur = (cur + " " + t).trim(); } if (cur) out.push(cur); return out; }
 
