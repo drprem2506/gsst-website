@@ -330,13 +330,13 @@
                  "You and your organisation are roughly in step.";
       return "<div class=\"gap-row\"><div class=\"gap-name\">" + esc(a.name) + "</div>" +
         "<div class=\"gap-bars\">" +
-          "<div class=\"gap-line\"><span class=\"gap-who\">I</span><div class=\"bar-track\" role=\"img\" aria-label=\"Your own habits " + a.self + " out of 5\"><div class=\"bar-fill self\" style=\"width:" + (a.self / 5 * 100) + "%\"></div></div><span class=\"bar-value\">" + fmt(a.self) + "</span></div>" +
+          "<div class=\"gap-line\"><span class=\"gap-who\">I</span><div class=\"bar-track\" role=\"img\" aria-label=\"Your own practices " + a.self + " out of 5\"><div class=\"bar-fill self\" style=\"width:" + (a.self / 5 * 100) + "%\"></div></div><span class=\"bar-value\">" + fmt(a.self) + "</span></div>" +
           "<div class=\"gap-line\"><span class=\"gap-who\">We</span><div class=\"bar-track\" role=\"img\" aria-label=\"Your organisation " + fmt(a.score) + " out of 5\"><div class=\"bar-fill\" style=\"width:" + (a.score / 5 * 100) + "%\"></div></div><span class=\"bar-value\">" + fmt(a.score) + "</span></div>" +
         "</div><p class=\"gap-note\">" + word + "</p></div>";
     }).join("");
     var mine = r.areas.slice().sort(function (a, b) { return a.self - b.self || a.score - b.score; })[0];
     return "<div class=\"card\" id=\"hc-self-card\"><h3>You and your organisation</h3>" +
-      "<p class=\"muted\">Your own habits (I) next to how you rated your organisation (we). The gaps show where you can lead and where you may need support.</p>" +
+      "<p class=\"muted\">Your own practices (I) next to how you rated your organisation (we). The gaps show where you can lead and where you may need support.</p>" +
       rows +
       "<div class=\"gap-action\"><strong>Your own next step: " + esc(mine.name.toLowerCase()) + ".</strong> " + esc(SELF_TIPS[mine.id]) + "</div></div>";
   }
