@@ -442,3 +442,23 @@ body.presenting { font-size: 1.15rem; }
 .diff li { margin: 6px 0; }
 @media (max-width: 960px) { .ministeps { grid-template-columns: 1fr 1fr; } .tiles.three.paths { grid-template-columns: 1fr; } }
 @media (max-width: 560px) { .ministeps { grid-template-columns: 1fr; } }
+/* Find your way: site map */
+.sitemap { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); grid-template-rows: auto 150px auto; gap: 0 22px; margin-top: 12px; }
+.mm-lines { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
+.mm-lines line { stroke: #c5d2cb; stroke-width: .35; vector-effect: non-scaling-stroke; stroke-width: 2; }
+.mm-b { position: relative; z-index: 1; background: #fff; border: 1px solid var(--line); border-top: 6px solid var(--c); border-radius: 10px; padding: 16px 18px; }
+.mm-b h3 { font-size: 1.05rem; margin: 0 0 8px; }
+.mm-b ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.mm-b a { font-weight: 600; color: var(--green-deep); }
+.mm-b .d { display: block; font-size: .9rem; color: var(--muted); }
+.mm-b .free { font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; background: var(--tint); color: var(--green-deep); border-radius: 10px; padding: 1px 7px; margin-left: 6px; }
+.mm-c { position: relative; z-index: 1; grid-column: 2; grid-row: 2; align-self: center; justify-self: center; background: var(--green-deep); color: #fff; border-radius: 999px; padding: 18px 26px; text-align: center; font-family: var(--display); text-transform: uppercase; letter-spacing: .03em; line-height: 1.2; }
+.mm-c small { display: block; font-family: var(--body); text-transform: none; letter-spacing: 0; opacity: .85; margin-top: 4px; }
+.sitemap > .b1, .sitemap > .b2, .sitemap > .b3 { grid-row: 1; }
+.sitemap > .b4, .sitemap > .b5, .sitemap > .b6 { grid-row: 3; }
+@media (max-width: 860px) {
+  .sitemap { grid-template-columns: 1fr; grid-template-rows: none; gap: 12px; }
+  .mm-lines { display: none; }
+  .mm-c { grid-column: 1; grid-row: 1; justify-self: stretch; border-radius: 12px; }
+  .sitemap > .mm-b { grid-row: auto; }
+}
