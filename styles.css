@@ -428,3 +428,17 @@ body.presenting { font-size: 1.15rem; }
 .queue-loop text { font-family: var(--body); }
 @media (max-width: 860px) { .queue { grid-template-columns:1fr; } }
 .help-box { border-left: 4px solid var(--rule); border-radius: 0 10px 10px 0; }
+/* Home rework */
+.tiles.three.paths { grid-template-columns: repeat(3, minmax(0,1fr)); }
+.paths-more { margin-top: 18px; color: var(--muted); }
+.ministeps { list-style: none; padding: 0; margin: 24px 0; display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 12px; counter-reset: none; }
+.ministeps li { background: #fff; border: 1px solid var(--line); border-top: 6px solid var(--c); border-radius: 10px; padding: 16px; display: grid; gap: 4px; }
+.ministeps .ms-n { font-family: var(--display); color: var(--muted); font-size: .9rem; }
+.ministeps strong { font-family: var(--display); font-weight: 500; text-transform: uppercase; letter-spacing: .03em; font-size: 1.05rem; }
+.ministeps li > span:last-child { color: var(--muted); font-size: .95rem; }
+.diff { background: var(--tint); border-radius: 12px; padding: 24px 28px; }
+.diff h3 { margin: 0 0 8px; }
+.diff ul { margin: 0 0 16px; padding-left: 20px; }
+.diff li { margin: 6px 0; }
+@media (max-width: 960px) { .ministeps { grid-template-columns: 1fr 1fr; } .tiles.three.paths { grid-template-columns: 1fr; } }
+@media (max-width: 560px) { .ministeps { grid-template-columns: 1fr; } }
