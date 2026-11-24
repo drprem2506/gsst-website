@@ -7,10 +7,10 @@
   var MIN_FOR_TEAM = 3;
 
   var AREAS = [
-    { id: "patterns", name: "Patterns over time" },
-    { id: "cause", name: "Cause and effect" },
-    { id: "beliefs", name: "Beliefs" },
-    { id: "conditions", name: "Changing conditions" }
+    { id: "patterns", name: "Notice patterns" },
+    { id: "cause", name: "See connections" },
+    { id: "beliefs", name: "Question beliefs" },
+    { id: "conditions", name: "Test small changes" }
   ];
   var STATEMENTS = [
     "We look at trends over months or years, not just this month's figures.",

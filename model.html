@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&amp;family=Source+Sans+3:ital,wght@0,400;0,600;1,400&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20261124a">
+<link rel="stylesheet" href="styles.css?v=20261124b">
 </head>
 <body id="top">
 <header class="site-header">
@@ -111,7 +111,7 @@ const STEPS = [
     body:"Start with what people actually experienced: the events, in plain words. A story is easier to share than a diagnosis, and it keeps everyone grounded in what really happened before anyone explains it away.",
     signs:["The same complaint comes up at every meeting.","Problems are explained as bad luck, or as one difficult person.","People tell different versions of the same event."],
     tryit:["Write the story in three sentences: who was involved, what happened, and what happened next.","Ask two people from different parts of the organisation to tell it too."],
-    example:'Lina notices the same near miss again, and tells her supervisor. <em>The report that travels up</em>',
+    example:'Lina notices the same near miss again, and tells her supervisor.',
     roots:"Events are the visible tip of the iceberg model used by Peter Senge and Daniel Kim." },
   { id:"pattern", sq:["What keeps", "happening?"], n:2, title:"The pattern", q:"What do the facts show over time, and what has been building up?", col:"#f9d48a",
     body:"A single event can mislead. A pattern over weeks, months or years shows what keeps repeating. Many problems that seem sudden have been building up quietly, like water filling a bathtub until it overflows.",
@@ -129,14 +129,14 @@ const STEPS = [
     ],
     signs:["Good people in the same seat behave in the same way.","A fix in one place creates a problem somewhere else.","News is softened, or reshaped, as it travels up."],
     tryit:["Draw four parts of the problem in a circle, and mark each ↑ or ↓.","List what reaches the top, and what never does."],
-    example:'The cost of passing bad news up rises, so concerns are softened, problems go unseen, and targets tighten. <em>The report that travels up</em>',
+    example:'The cost of passing bad news up rises, so concerns are softened, problems go unseen, and targets tighten.',
     habit:"See connections",
     roots:"Feedback loops and system dynamics (Jay Forrester); stocks, flows and information (Donella Meadows); causal loops and recurring storylines (Peter Senge, Daniel Kim); relationships and parts and wholes (Derek Cabrera)." },
   { id:"beliefs", sq:["What holds it", "in place?"], n:4, title:"Beliefs and purpose", q:"What holds it in place, and what does the system really reward?", col:"#c9b6e8",
     body:"Beliefs shape what people notice and what they think is possible. A system's real purpose shows in how it behaves, not in what it says. If someone watched your organisation for a month, what would they say it is for?",
     signs:["“That's just how things are done here.”","Stated values and who gets promoted point in different directions.","Some perspectives are never heard."],
     tryit:["Ask: whose perspective is missing from this story?","Ask: what happened to the last person who spoke up?"],
-    example:'Promoted for managing upwards, a head of department controls what the board sees. <em>What happened to the last person who spoke up?</em>',
+    example:'Promoted for managing upwards, a head of department controls what the board sees.',
     subsHead:"Look at three levels",
     subs:[
       ["Within me", "What do I believe, value or fear here? What am I telling myself, for example \u201cIf I speak up, I will be seen as disloyal\u201d?"],
@@ -210,7 +210,12 @@ function show(i) {
   panel.innerHTML = h;
   panel.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => show(+b.dataset.go)));
 }
-show(0);
+(function () {
+  var h = (location.hash || "").match(/^#step-([1-5])$/);
+  show(h ? +h[1] : 0);
+  if (h) { var mp = document.getElementById("map"); if (mp) mp.scrollIntoView({ block: "start" }); }
+  window.addEventListener("hashchange", function () { var k = (location.hash || "").match(/^#step-([1-5])$/); if (k) show(+k[1]); });
+})();
 </script>
 </main>
 <footer class="site-footer">

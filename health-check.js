@@ -8,10 +8,10 @@
   var STORE_KEY = "gsst-health-check-last";
 
   var AREAS = [
-    { id: "patterns", name: "Patterns over time" },
-    { id: "cause", name: "Cause and effect" },
-    { id: "beliefs", name: "Beliefs" },
-    { id: "conditions", name: "Changing conditions" }
+    { id: "patterns", name: "Notice patterns" },
+    { id: "cause", name: "See connections" },
+    { id: "beliefs", name: "Question beliefs" },
+    { id: "conditions", name: "Test small changes" }
   ];
 
   var STATEMENTS = [
@@ -395,7 +395,9 @@
       "<div class=\"card\" id=\"hc-compare\" hidden></div>" +
       "<div class=\"dash-grid\">" +
         "<div class=\"card\"><h3>Try this month: " + esc(lowest.name.toLowerCase()) + "</h3><ol class=\"tips\">" +
-          adv.tips.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ol></div>" +
+          adv.tips.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ol>" +
+          "<p class=\"no-print\"><a href=\"model.html#step-" + ({patterns: 2, cause: 3, beliefs: 4, conditions: 5}[lowest.id]) + "\">Explore this practice in the Thinking Smarter Model &rarr;</a></p>" +
+          "<p class=\"muted small\">The four areas are the four practices of the <a href=\"model.html\">Thinking Smarter Model</a>.</p></div>" +
         "<div class=\"card next\"><h3>Suggested next step</h3><p><strong>" + esc(adv.service) + "</strong>, " + esc(adv.why) + ".</p>" +
           "<div class=\"actions no-print\"><a class=\"btn btn-primary\" href=\"" + mail + "\">Ask about " + esc(adv.service) + "</a></div>" +
           "<p class=\"muted small no-print\">Or email " + EMAIL + ".</p>" +
