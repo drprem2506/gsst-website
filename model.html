@@ -51,6 +51,22 @@
 .mm .hint { font-size:.9rem; color:var(--muted); text-align:center; margin:6px 0 4px; }
 .mm .credit { margin:10px 8px 8px; padding:14px 16px; background:var(--tint); border-radius:8px; font-size:.92rem; }
 .mm .credit p { margin:6px 0 0; }
+.ahead-wrap { overflow-x:auto; }
+.ahead { width:100%; border-collapse:separate; border-spacing:0 8px; min-width:560px; }
+.ahead th, .ahead td { text-align:left; padding:14px 18px; background:#fff; border-top:1px solid var(--line); border-bottom:1px solid var(--line); vertical-align:top; }
+.ahead thead th { background:none; border:0; font-family:var(--display); text-transform:uppercase; letter-spacing:.06em; font-size:.85rem; color:var(--green); font-weight:500; padding-bottom:2px; }
+.ahead tbody th { font-family:var(--display); text-transform:uppercase; letter-spacing:.03em; font-weight:500; border-radius:6px 0 0 6px; width:24%; }
+.ahead tbody td:last-child { border-right:1px solid var(--line); border-radius:0 6px 6px 0; color:var(--green-deep); font-weight:600; }
+@media (max-width:640px){
+  .ahead{min-width:0}
+  .ahead thead{display:none}
+  .ahead, .ahead tbody, .ahead tr, .ahead th, .ahead td{display:block;width:auto}
+  .ahead tr{margin-bottom:12px}
+  .ahead tbody th{border:1px solid var(--line);border-bottom:0;border-radius:6px 6px 0 0;width:auto}
+  .ahead td{border-top:0;border-bottom:0;border-right:1px solid var(--line);border-left:1px solid var(--line);padding-top:4px}
+  .ahead td:last-child{border-bottom:1px solid var(--line);border-radius:0 0 6px 6px}
+  .ahead td::before{content:attr(data-label);display:block;font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--green);font-weight:500;margin-bottom:2px}
+}
 .gaps { list-style:none; padding:0; margin:18px 0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
 .gaps li { background:#fff; border:1px solid var(--line); border-top:4px solid var(--green); border-radius:8px; padding:18px 20px; }
 .gaps strong { display:block; font-family:var(--display); text-transform:uppercase; letter-spacing:.04em; font-weight:500; font-size:1.1rem; margin-bottom:6px; }
@@ -81,6 +97,20 @@
       </div>
     </div>
     <aside class="panel" id="panel" aria-live="polite"></aside>
+  </div>
+</section>
+
+<section id="ahead">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Looking ahead</span>
+      <h2>The same questions shape the future</h2>
+      <p>The model works in both directions. Use it to understand a problem that keeps coming back, or to plan for a future you want to create.</p>
+    </div>
+    <div class="ahead-wrap"><table class="ahead">
+      <thead><tr><th scope="col">Step</th><th scope="col">Fixing a problem</th><th scope="col">Shaping a future</th></tr></thead>
+      <tbody><tr><th scope="row" style="border-left:6px solid #f4b2a1">1. The story</th><td data-label="Fixing a problem">What happened?</td><td data-label="Shaping a future">What story do we want to tell in three years?</td></tr><tr><th scope="row" style="border-left:6px solid #f9d48a">2. The pattern</th><td data-label="Fixing a problem">What keeps happening?</td><td data-label="Shaping a future">What trends and early signs are emerging?</td></tr><tr><th scope="row" style="border-left:6px solid #9fd8e6">3. The structure</th><td data-label="Fixing a problem">What keeps it going?</td><td data-label="Shaping a future">What structures would make that future likely?</td></tr><tr><th scope="row" style="border-left:6px solid #c9b6e8">4. Beliefs and purpose</th><td data-label="Fixing a problem">What holds it in place?</td><td data-label="Shaping a future">Which beliefs would need to shift?</td></tr><tr><th scope="row" style="border-left:6px solid #a6dcbc">5. The small change</th><td data-label="Fixing a problem">Where can one change help most?</td><td data-label="Shaping a future">What small step can we start today?</td></tr></tbody>
+    </table></div>
   </div>
 </section>
 
