@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /team.html
+
+Sitemap: https://globalsystemsthinking.org/sitemap.xml
