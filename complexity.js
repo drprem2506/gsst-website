@@ -35,7 +35,7 @@
     if (!dots.length && W > 40) seed();
   }
   var SET_SECS = 7;
-  var SETS = [["One person", "A family", "A community"], ["A school", "A team", "An organisation"], ["One nation", "Another nation", "A region"]];   // widening, from one person to the wider world
+  var SETS = [["One person", "A family", "A community"], ["A student", "A class", "A school"], ["A team", "A department", "An organisation"], ["A nation", "A region", "The world"]];   // widening, from one person to the wider world
   var REACH = function () { return Math.max(90, Math.min(150, W / 5)); };
 
   function step(dt) {
