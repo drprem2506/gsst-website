@@ -496,3 +496,13 @@ body.presenting { font-size: 1.15rem; }
 .flux-fig canvas { display: block; width: 100%; height: 440px; border-radius: 16px; background: #fff; border: 1px solid var(--line); }
 .flux-fig figcaption { margin-top: 10px; font-size: 0.95rem; color: var(--muted); }
 @media (max-width: 820px) { .flux-grid { grid-template-columns: 1fr; gap: 24px; } .flux-fig canvas { height: 420px; } }
+.flux-stage { position: relative; }
+.flux-fig canvas { cursor: pointer; }
+.flux-pause { position: absolute; top: 10px; right: 10px; font: inherit; font-size: 0.85rem; font-weight: 600; min-height: 34px; padding: 4px 14px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,.92); color: var(--green-deep); cursor: pointer; }
+.flux-pause:hover { border-color: var(--green); }
+.flux-pause:focus-visible, .flux-fig canvas:focus-visible { outline: 3px solid var(--green); outline-offset: 2px; }
+.flux-hint { margin: 10px 0 6px; font-size: 0.95rem; font-weight: 600; color: var(--green-deep); }
+.flux-key { list-style: none; margin: 0 0 8px; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 18px; font-size: 0.9rem; color: var(--muted); }
+.flux-key li { display: flex; gap: 8px; align-items: flex-start; line-height: 1.35; }
+.flux-key svg { flex: none; width: 18px; height: 18px; margin-top: 1px; }
+@media (max-width: 520px) { .flux-key { grid-template-columns: 1fr; } }

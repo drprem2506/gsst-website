@@ -203,15 +203,39 @@
     step(dt); draw();
     requestAnimationFrame(frame);
   }
-  function start() { if (running || reduce) return; running = true; last = performance.now(); requestAnimationFrame(frame); }
+  var userPaused = false, optIn = false, visible = true;
+  var btn = document.getElementById("flux-pause");
+  function start() { if (running || userPaused || !visible || (reduce && !optIn)) return; running = true; last = performance.now(); requestAnimationFrame(frame); }
   function stop() { running = false; }
+  function setBtn() { if (!btn) return; var on = running || (!userPaused && !(reduce && !optIn)); btn.textContent = on ? "Pause" : "Play"; btn.setAttribute("aria-pressed", on ? "false" : "true"); }
+  if (btn) btn.addEventListener("click", function () {
+    if (running) { userPaused = true; stop(); } else { userPaused = false; optIn = true; start(); }
+    setBtn();
+  });
+  function trigger(d) {                                  // a visitor's own change, from the dot they chose
+    var dir = DIR[cellOf(d)], ang = dir.a + dir.s * t;
+    d.hops = 5; d.fan = 2; d.dx = Math.cos(ang); d.dy = Math.sin(ang); d.glow = 1; d.wait = -1;
+    spread(d);
+    if (!running) { userPaused = false; optIn = true; start(); setBtn(); }
+    if (!running) draw();
+  }
+  cv.addEventListener("click", function (e) {
+    var b = cv.getBoundingClientRect(), x = e.clientX - b.left - cv.clientLeft, y = e.clientY - b.top - cv.clientTop;
+    var best = null, bd = 1e9;
+    dots.forEach(function (d) { var dd = Math.hypot(d.x - x, d.y - y); if (dd < bd) { bd = dd; best = d; } });
+    if (best && bd < 70) trigger(best);
+  });
+  cv.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); trigger(dots[Math.floor(Math.random() * dots.length)]); }
+  });
 
   size();
   if (reduce) { for (var i = 0; i < 240; i++) step(0.05); draw(); }
   else draw();
   if ("ResizeObserver" in window) new ResizeObserver(function () { size(); draw(); }).observe(cv);
   if ("IntersectionObserver" in window) {
-    new IntersectionObserver(function (es) { es.forEach(function (e) { e.isIntersecting ? start() : stop(); }); }, { threshold: 0.1 }).observe(cv);
+    new IntersectionObserver(function (es) { es.forEach(function (e) { visible = e.isIntersecting; visible ? start() : stop(); }); }, { threshold: 0.1 }).observe(cv);
   } else start();
-  document.addEventListener("visibilitychange", function () { document.hidden ? stop() : start(); });
+  document.addEventListener("visibilitychange", function () { if (document.hidden) stop(); else start(); });
+  setBtn();
 })();

@@ -19,7 +19,7 @@
 <meta name="twitter:description" content="Thinking Smarter consulting, certified training and coaching for organisations, from The Global School of Systems Thinking in Singapore.">
 <meta name="twitter:image" content="https://globalsystemsthinking.org/assets/share/og-home.jpg">
 <link rel="icon" type="image/png" href="assets/favicon.png">
-<link rel="stylesheet" href="styles.css?v=20261127c">
+<link rel="stylesheet" href="styles.css?v=20261127d">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"EducationalOrganization","name":"The Global School of Systems Thinking","alternateName":"GSST",
 "url":"https://globalsystemsthinking.org/","logo":"https://globalsystemsthinking.org/assets/logo.png","email":"globalsystemsthinking@gmail.com",
@@ -27,7 +27,7 @@
 "address":{"@type":"PostalAddress","addressCountry":"SG"},
 "founder":{"@type":"Person","name":"Dr. Prem Kumar"}}
 </script>
-<script src="complexity.js?v=20261127o" defer></script>
+<script src="complexity.js?v=20261127p" defer></script>
 <script src="share.js?v=20261124a" defer></script>
 </head>
 <body id="top">
@@ -69,8 +69,18 @@
       <p>In a world like this, trying harder is not enough. We need learning tools that help us see what is happening, make sense of it together, and choose where to act.</p>
     </div>
     <figure class="flux-fig">
-      <canvas id="flux" role="img" aria-label="A grid of twelve areas in four rows: one person, a family and a community; a student, a class and a school; a team, a department and an organisation; a nation, a region and the world. Dots, some solid and some faint, drift across the dotted boundaries, linked by dashed lines. Every few seconds a change starts in one area and ripples from dot to dot in that area's own direction, so ripples cross and overlap. A few lasting links run across the columns, and one runs all the way from one person to the world; sometimes a red dot travels its whole length. The links come in four soft colours, suggesting different kinds of flow."></canvas>
-      <figcaption>Each dot is something that can change: a decision, a workload, trust, a policy, law or regulation, even the mental models we hold. The links show what affects what. Solid dots are visible; faint ones are hidden and appear only when a change ripples through them. The dotted lines mark boundaries at every level, from a family to a nation. Boundaries are needed, but each side tends to see only its own part, while the ripple effects of our actions, including unintended ones, travel far and wide. From one person to the whole world, what we do can ripple in ways we never expected.</figcaption>
+      <div class="flux-stage">
+        <canvas id="flux" role="img" tabindex="0" aria-label="A grid of twelve areas in four rows: one person, a family and a community; a student, a class and a school; a team, a department and an organisation; a nation, a region and the world. Dots, some solid and some faint, drift across the dotted boundaries, linked by dashed lines. Every few seconds a change starts in one area and ripples from dot to dot in that area's own direction, so ripples cross and overlap. A few lasting links run across the columns, and one runs all the way from one person to the world; sometimes a red dot travels its whole length. The links come in four soft colours, suggesting different kinds of flow."></canvas>
+        <button type="button" class="flux-pause" id="flux-pause" aria-pressed="false">Pause</button>
+      </div>
+      <p class="flux-hint" id="flux-hint">Tap or click a dot to see what one change could set off.</p>
+      <ul class="flux-key" aria-label="Key">
+        <li><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="6" fill="#9fd8e6" stroke="rgba(29,41,37,.3)"/></svg>Something that can change, such as a decision, trust, a policy or a mental model</li>
+        <li><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="6" fill="rgba(201,182,232,.35)" stroke="rgba(29,41,37,.5)" stroke-dasharray="2 2"/></svg>Hidden, until a change reaches it</li>
+        <li><svg viewBox="0 0 20 20" aria-hidden="true"><line x1="10" y1="1" x2="10" y2="19" stroke="rgba(86,101,95,.6)" stroke-width="2" stroke-dasharray="2 4"/></svg>A boundary</li>
+        <li><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="5" fill="#c8372d"/><circle cx="10" cy="10" r="8.5" fill="none" stroke="rgba(200,55,45,.4)"/></svg>A change rippling out</li>
+      </ul>
+      <figcaption>Boundaries are needed, but each side tends to see only its own part, while the ripple effects of our actions, including unintended ones, travel far and wide. From one person to the whole world, what we do can ripple in ways we never expected.</figcaption>
     </figure>
   </div>
 </section>
