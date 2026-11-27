@@ -30,6 +30,8 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     if (!dots.length) seed();
   }
+  var SET_SECS = 7;
+  var SETS = [["A family", "A school", "A community"], ["One team", "Another team", "A partner"], ["One nation", "Another nation", "A region"]];
   var REACH = function () { return Math.max(90, Math.min(150, W / 5)); };
 
   function step(dt) {
@@ -74,8 +76,32 @@
     });
   }
 
+  function boundaries() {                                  // faint lines between teams: each sees only its part
+    var n = W < 520 ? 2 : 3;
+    ctx.save();
+    ctx.strokeStyle = "rgba(86,101,95,.32)"; ctx.lineWidth = 2; ctx.setLineDash([2, 7]);
+    for (var i = 1; i < n; i++) { var x = Math.round(W * i / n) + 0.5; ctx.beginPath(); ctx.moveTo(x, 10); ctx.lineTo(x, H - 10); ctx.stroke(); }
+    ctx.restore();
+  }
+  function labels() {                                      // drawn last, so dots never cover them
+    var k = Math.floor(t / SET_SECS) % SETS.length, ph = (t % SET_SECS) / SET_SECS;
+    var fadeA = Math.min(1, ph * 8, (1 - ph) * 8);            // fade in and out as the labels change
+    var zones = SETS[k].slice(0, W < 520 ? 2 : 3), n = zones.length;
+    ctx.save(); ctx.globalAlpha = fadeA;
+    ctx.font = "600 13px 'Source Sans 3', system-ui, sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    for (var j = 0; j < n; j++) {
+      var x = W * (j + 0.5) / n, y = H - 16, w = ctx.measureText(zones[j]).width + 16;
+      ctx.fillStyle = "rgba(255,255,255,.9)"; ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(x - w / 2, y - 11, w, 22, 11); else ctx.rect(x - w / 2, y - 11, w, 22);
+      ctx.fill();
+      ctx.fillStyle = "rgba(86,101,95,.9)"; ctx.fillText(zones[j], x, y);
+    }
+    ctx.restore();
+  }
+
   function draw() {
     ctx.clearRect(0, 0, W, H);
+    boundaries();
     var reach = REACH();
     ctx.setLineDash([5, 6]);
     for (var i = 0; i < dots.length; i++) {
@@ -104,6 +130,7 @@
         ctx.lineWidth = 1; ctx.strokeStyle = "rgba(29,41,37,.25)"; ctx.stroke();
       }
     });
+    labels();
   }
 
   function frame(now) {
