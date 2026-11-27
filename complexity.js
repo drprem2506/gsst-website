@@ -17,21 +17,25 @@
       var k = Math.random();
       var r = k < 0.15 ? 13 : k < 0.5 ? 8 : 4.5;           // big, medium, small variables
       dots.push({
-        x: Math.random() * W, y: Math.random() * H,
+        x: 0, y: Math.random() * H,
         vx: (Math.random() - 0.5) * 14, vy: (Math.random() - 0.5) * 14,
-        r: r, c: COLS[i % COLS.length], glow: 0, wait: -1, hidden: Math.random() < 0.35
+        r: r, c: COLS[i % COLS.length], glow: 0, wait: -1, hidden: Math.random() < 0.35,
+        home: ((i % 3) + 0.15 + Math.random() * 0.7) / 3   // a loose home area, so every area keeps some dots
       });
     }
+    dots.forEach(function (d) { d.x = d.home * W; });
   }
   function size() {
     dpr = Math.min(window.devicePixelRatio || 1, 3);
+    var oW = W, oH = H;
     W = Math.max(1, cv.clientWidth); H = Math.max(1, cv.clientHeight);   // inside the border, so it draws pixel for pixel
+    if (dots.length && oW > 1 && (oW !== W || oH !== H)) dots.forEach(function (d) { d.x *= W / oW; d.y *= H / oH; });
     cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    if (!dots.length) seed();
+    if (!dots.length && W > 40) seed();
   }
   var SET_SECS = 7;
-  var SETS = [["A family", "A school", "A community"], ["One team", "Another team", "A partner"], ["One nation", "Another nation", "A region"]];
+  var SETS = [["One person", "A family", "A community"], ["A school", "A team", "An organisation"], ["One nation", "Another nation", "A region"]];   // widening, from one person to the wider world
   var REACH = function () { return Math.max(90, Math.min(150, W / 5)); };
 
   function step(dt) {
@@ -48,6 +52,7 @@
         }
         if (d < a.r + b.r + 28) { fx -= (dx / d) * 16; fy -= (dy / d) * 16; }   // keep apart
       }
+      fx += (a.home * W - a.x) * 0.012;                    // gentle pull back towards its home area
       // a slowly turning current, so the whole field keeps moving
       fx += Math.cos(t * 0.2 + a.y * 0.012 + a.r) * 6;
       fy += Math.sin(t * 0.17 + a.x * 0.012 + a.r) * 6;
@@ -63,17 +68,17 @@
     nextPulse -= dt;
     if (nextPulse <= 0) {                                  // one small change...
       var s = dots[Math.floor(Math.random() * dots.length)];
-      s.glow = 1; spread(s, 2); nextPulse = 4 + Math.random() * 2;
+      s.glow = 1; spread(s, 2); nextPulse = 6 + Math.random() * 3;
     }
   }
   function spread(src, hops) {                             // ...ripples to its neighbours, then theirs
     if (hops <= 0) return;
     var reach = REACH();
-    dots.forEach(function (b) {
-      if (b === src || b.glow > 0.2 || b.wait >= 0) return;
-      var dx = b.x - src.x, dy = b.y - src.y;
-      if (dx * dx + dy * dy < reach * reach) { b.wait = 0.45 + Math.random() * 0.3; b.hops = hops - 1; }
-    });
+    var near = dots.filter(function (b) {
+      if (b === src || b.glow > 0.2 || b.wait >= 0) return false;
+      var dx = b.x - src.x, dy = b.y - src.y; return dx * dx + dy * dy < reach * reach;
+    }).sort(function (p, q) { return Math.hypot(p.x - src.x, p.y - src.y) - Math.hypot(q.x - src.x, q.y - src.y); }).slice(0, 2);
+    near.forEach(function (b) { b.wait = 0.6 + Math.random() * 0.4; b.hops = hops - 1; });   // a path, not a burst
   }
 
   function boundaries() {                                  // faint lines between teams: each sees only its part
@@ -86,6 +91,7 @@
   function labels() {                                      // drawn last, so dots never cover them
     var k = Math.floor(t / SET_SECS) % SETS.length, ph = (t % SET_SECS) / SET_SECS;
     var fadeA = Math.min(1, ph * 8, (1 - ph) * 8);            // fade in and out as the labels change
+    if (!SETS[k]) return;
     var zones = SETS[k].slice(0, W < 520 ? 2 : 3), n = zones.length;
     ctx.save(); ctx.globalAlpha = fadeA;
     ctx.font = "600 13px 'Source Sans 3', system-ui, sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
@@ -110,23 +116,24 @@
         if (d2 > reach * reach) continue;
         var k = 1 - Math.sqrt(d2) / reach, hot = Math.min(a.glow, b.glow);
         var faint = (a.hidden || b.hidden) ? 0.35 : 1;
-        ctx.strokeStyle = hot > 0.05 ? "rgba(200,55,45," + (0.25 + 0.6 * hot) + ")" : LINK + (0.15 + 0.45 * k) * faint + ")";
-        ctx.lineWidth = hot > 0.05 ? 2 : 1.2;
+        ctx.strokeStyle = hot > 0.05 ? "rgba(200,55,45," + (0.2 + 0.4 * hot) + ")" : LINK + (0.15 + 0.45 * k) * faint + ")";
+        ctx.lineWidth = hot > 0.05 ? 1.6 : 1.2;
         ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
       }
     }
     ctx.setLineDash([]);
     dots.forEach(function (a) {
       if (a.glow > 0) {
-        ctx.beginPath(); ctx.arc(a.x, a.y, a.r + 4 + 14 * (1 - a.glow), 0, Math.PI * 2);
-        ctx.strokeStyle = "rgba(200,55,45," + a.glow * 0.7 + ")"; ctx.lineWidth = 2; ctx.stroke();
+        ctx.beginPath(); ctx.arc(a.x, a.y, a.r + 3 + 7 * (1 - a.glow), 0, Math.PI * 2);
+        ctx.strokeStyle = "rgba(200,55,45," + a.glow * 0.4 + ")"; ctx.lineWidth = 1.5; ctx.stroke();
       }
       ctx.beginPath(); ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
       if (a.hidden && a.glow < 0.05) {                      // hidden: a faint outline until a ripple reveals it
         ctx.globalAlpha = 0.28; ctx.fillStyle = a.c; ctx.fill(); ctx.globalAlpha = 1;
         ctx.setLineDash([3, 3]); ctx.lineWidth = 1.2; ctx.strokeStyle = "rgba(29,41,37,.45)"; ctx.stroke(); ctx.setLineDash([]);
       } else {
-        ctx.fillStyle = a.glow > 0.5 ? RIPPLE : a.c; ctx.fill();
+        ctx.fillStyle = a.c; ctx.fill();
+        if (a.glow > 0.05) { ctx.globalAlpha = Math.min(1, a.glow * 0.85); ctx.fillStyle = RIPPLE; ctx.fill(); ctx.globalAlpha = 1; }
         ctx.lineWidth = 1; ctx.strokeStyle = "rgba(29,41,37,.25)"; ctx.stroke();
       }
     });
