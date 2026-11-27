@@ -24,9 +24,8 @@
     }
   }
   function size() {
-    var b = cv.getBoundingClientRect();
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    W = Math.max(1, b.width); H = Math.max(1, b.height);
+    dpr = Math.min(window.devicePixelRatio || 1, 3);
+    W = Math.max(1, cv.clientWidth); H = Math.max(1, cv.clientHeight);   // inside the border, so it draws pixel for pixel
     cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     if (!dots.length) seed();
