@@ -45,6 +45,7 @@
 .sim .g .k{font-size:14px;color:var(--muted)}
 .sim .g .v{font-family:var(--display);font-size:34px;line-height:1.1}
 .sim .g .d{font-size:14px;font-weight:600;min-height:20px}
+.sim .g .x{font-size:13px;line-height:1.35;color:var(--muted);margin-top:4px}
 .sim .up{color:var(--green)}.sim .down{color:var(--red)}
 .sim .hid .row{display:flex;justify-content:space-between;gap:8px;font-size:14px;color:var(--muted);padding:2px 0}
 .sim .hid .row span:last-child{letter-spacing:.2em}
@@ -69,7 +70,7 @@
 .sim .five{display:grid;gap:8px;margin-top:10px}.sim .five div{display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:start}
 .sim .five p{max-width:none}
 .sim .five .n{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);color:#1d2925}
-@media(max-width:760px){.sim .dash{grid-template-columns:repeat(3,minmax(0,1fr))}.sim .hid{grid-column:1/-1}.sim .g .v{font-size:28px}}
+@media(max-width:760px){.sim .g .x{display:none}.sim .dash{grid-template-columns:repeat(3,minmax(0,1fr))}.sim .hid{grid-column:1/-1}.sim .g .v{font-size:28px}}
 .sim-sources{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin-top:8px}
 .sim-sources summary{cursor:pointer;font-weight:600;color:var(--green-deep)}
 .sim-sources p,.sim-sources li{font-size:0.95rem;color:var(--muted);max-width:none}
@@ -82,15 +83,15 @@
     <h1>The deadline simulation</h1>
     <hr class="rule">
     <p class="lead">You lead a division that keeps missing its deadlines. You have four quarters to turn it round. Each quarter you choose one action, and before you commit, someone will challenge your thinking.</p>
-    <p>It takes about five minutes. Nothing you choose is stored or sent anywhere.</p>
+    <p>It takes about five minutes. If you agree at the start, your choices are shared anonymously for research; otherwise nothing is sent.</p>
   </div>
 </section>
 <section class="sim" style="padding-top:8px">
   <div class="wrap">
   <div class="dash" aria-label="Dashboard">
-    <div class="g"><div class="k">On-time delivery</div><div class="v" id="v-ontime"></div><div class="d" id="d-ontime"></div></div>
-    <div class="g"><div class="k">Budget left</div><div class="v" id="v-budget"></div><div class="d" id="d-budget"></div></div>
-    <div class="g"><div class="k">Backlog (tasks)</div><div class="v" id="v-backlog"></div><div class="d" id="d-backlog"></div></div>
+    <div class="g"><div class="k">On-time delivery</div><div class="v" id="v-ontime"></div><div class="d" id="d-ontime"></div><div class="x">Share of this quarter's deliverables handed over by the agreed date</div></div>
+    <div class="g"><div class="k">Budget left</div><div class="v" id="v-budget"></div><div class="d" id="d-budget"></div><div class="x">From $100k for the year; extra help and late work both cost money</div></div>
+    <div class="g"><div class="k">Backlog (tasks)</div><div class="v" id="v-backlog"></div><div class="d" id="d-backlog"></div><div class="x">Work waiting to be done: requests, fixes and changes</div></div>
     <div class="g hid"><div class="k">Hidden measures</div>
       <div class="row"><span>Fatigue</span><span id="h-fatigue">? ? ?</span></div><div class="row"><span>Trust and candour</span><span id="h-trust">? ? ?</span></div>
       <div class="row"><span>Rework</span><span id="h-rework">? ? ?</span></div><div class="row"><span>Late changes</span><span id="h-scope">? ? ?</span></div></div>
@@ -122,7 +123,7 @@
 // Visible: on-time %, budget, backlog. Hidden: fatigue, trust (candour), rework, late scope changes.
 const CHOICES = {
   overtime: { label: "Push for overtime to hit the dates", short: "Overtime push",
-    now: { boost: 14, fatigue: 18, backlog: -12 }, later: [{ in: 1, rework: 12, trust: -4 }],
+    now: { boost: 14, fatigue: 18, backlog: -12, budget: -10 }, later: [{ in: 1, rework: 12, trust: -4 }],
     challenge: "What happens to the same people after a quarter of extra hours, and what slips when they are tired?" },
   check: { label: "Add a sign-off step so nothing goes out unchecked", short: "Extra sign-off",
     now: { boost: -4, rework: -10 }, later: [{ in: 1, backlog: 8, trust: -8 }],
@@ -142,7 +143,7 @@ const CHOICES = {
 };
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 function newState() {
-  return { round: 0, ontime: 58, budget: 100, backlog: 40, fatigue: 30, trust: 55, rework: 20, scope: 25,
+  return { round: 0, ontime: 52, budget: 100, backlog: 40, fatigue: 30, trust: 55, rework: 20, scope: 25,
            learned: false, frozen: false, queue: [], history: [], picks: [] };
 }
 function snapshot(s) { return { ontime: s.ontime, budget: s.budget, backlog: s.backlog, fatigue: s.fatigue, trust: s.trust, rework: s.rework, scope: s.scope }; }
@@ -166,6 +167,8 @@ function apply(s, key) {
   s.trust += s.ontime < 50 ? -3 : 0;                         // repeated misses erode trust
   s.fatigue = clamp(s.fatigue, 5, 95); s.trust = clamp(s.trust, 5, 95);
   s.rework = clamp(s.rework, 0, 90); s.scope = clamp(s.scope, 0, 90); s.backlog = clamp(s.backlog, 0, 120);
+  s.delay = Math.round((100 - s.ontime) / 10);                // late work costs money: penalties, extra handling, lost goodwill
+  s.budget -= s.delay;
   s.ontime = Math.round(clamp(100 - 0.32 * s.backlog - 0.45 * s.rework - 0.4 * s.scope
     - 0.55 * Math.max(0, s.fatigue - 35) + 0.3 * (s.trust - 50) + boost, 12, 97));
   s.history.push(snapshot(s));
@@ -177,7 +180,7 @@ const $ = (id) => document.getElementById(id);
 const esc = (x) => String(x).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 let S, prev, pending = null, phase = "intro", first = [], plays = 0, sent = false, share = true;
 const ENDPOINT = "https://script.google.com/macros/s/AKfycbw_pX-eAvm-QaGTLADu6RY6bb-65RiuWouXvSr3eJKB6TKcOi8VecgTOIo18xHAQvfL/exec";
-const START = { ontime: 58, budget: 100, backlog: 40 };
+const START = { ontime: 52, budget: 100, backlog: 40 };
 
 function dash(){
   const cur = S.history.length ? S.history[S.history.length-1] : START;
@@ -185,7 +188,7 @@ function dash(){
   [["ontime","%"],["budget",""],["backlog",""]].forEach(([k,u]) => {
     const v = Math.round(cur[k]); $("v-"+k).textContent = (k==="budget"?"$":"") + v + (k==="budget"?"k":u);
     const dv = Math.round(cur[k] - p[k]); const good = k==="backlog" ? dv < 0 : dv > 0;
-    $("d-"+k).textContent = dv === 0 ? "" : (dv > 0 ? "▲ " : "▼ ") + Math.abs(dv) + (k==="ontime"?" pts":"");
+    $("d-"+k).textContent = dv === 0 ? "" : (dv > 0 ? "▲ " : "▼ ") + (k==="budget"?"$":"") + Math.abs(dv) + (k==="ontime"?" pts":k==="budget"?"k":"");
     $("d-"+k).className = "d " + (dv === 0 ? "" : good ? "up" : "down");
   });
 }
@@ -207,7 +210,7 @@ function render(){
   dash();
   const card = $("card");
   if (phase === "intro"){
-    card.innerHTML = `<h2>Before you start</h2><div class="sit"><p>The dashboard shows what you can see: on-time delivery, budget and backlog. Some things that matter are hidden, and you will only see them at the end. Some effects of your choices will also take time to arrive.</p><p>There is no single right answer. Notice what you assume as you go.</p></div><label style="display:flex;gap:10px;align-items:flex-start;font-size:15px;color:var(--muted)"><input type="checkbox" id="share" ${share ? "checked" : ""} style="margin-top:4px;width:18px;height:18px"> <span>Share my anonymous choices to help GSST's research on how people decide. Nothing that identifies you is collected. <a href="privacy.html#simulation">Privacy note</a></span></label><div class="nav"><button class="b go" id="begin">Start quarter 1</button></div>`;
+    card.innerHTML = `<h2>Before you start</h2><div class="sit"><p>The dashboard shows what you can see:</p><ul style="margin:0 0 10px;padding-left:20px"><li><b>On-time delivery:</b> the share of this quarter\'s deliverables, such as reports, releases or services, handed over by the date agreed. It starts at 52%, close to the share of projects delivered on time in a global survey of project professionals (Project Management Institute, 2018).</li><li><b>Budget left:</b> you have $100k set aside this year to turn things round. Overtime ($10k), contractors ($25k) and recruiting a new project lead ($10k) come out of it. Late work costs money too, through penalties, extra handling and lost goodwill, so each quarter some budget goes on delays: the more that is late, the more it costs.</li><li><b>Backlog:</b> the number of work items waiting to be done, such as requests, fixes and changes. It starts at 40, already more than the team can clear, and grows each quarter as new work, rework and late changes arrive. The exact number matters less than whether it rises or falls.</li></ul><p>Some things that matter are hidden, and you will only see them at the end. Some effects of your choices will also take time to arrive.</p><p>There is no single right answer. Notice what you assume as you go.</p></div><label style="display:flex;gap:10px;align-items:flex-start;font-size:15px;color:var(--muted)"><input type="checkbox" id="share" ${share ? "checked" : ""} style="margin-top:4px;width:18px;height:18px"> <span>Share my anonymous choices to help GSST's research on how people decide. Nothing that identifies you is collected. <a href="privacy.html#simulation">Privacy note</a></span></label><div class="nav"><button class="b go" id="begin">Start quarter 1</button></div>`;
     $("begin").onclick = () => { share = $("share").checked; plays++; sent = false; first = []; phase = "choose"; render(); };
     return;
   }
@@ -228,7 +231,7 @@ function render(){
   if (phase === "result"){
     const h = S.history[S.history.length-1], k = S.picks[S.picks.length-1];
     const building = S.queue.length > 0;
-    card.innerHTML = `<h2>End of quarter ${S.round}</h2><div class="sit"><p>You chose: <b>${esc(CHOICES[k].short)}</b>. On-time delivery is now <b>${h.ontime}%</b>.</p>
+    card.innerHTML = `<h2>End of quarter ${S.round}</h2><div class="sit"><p>You chose: <b>${esc(CHOICES[k].short)}</b>. On-time delivery is now <b>${h.ontime}%</b>. Late work cost $${S.delay}k this quarter.</p>
       ${building ? '<p class="hint">Something is building that the dashboard does not show yet.</p>' : ""}</div>
       <div class="nav"><button class="b go" id="next">${S.round < 4 ? "Go to quarter " + (S.round+1) : "See your review"}</button></div>`;
     $("next").onclick = () => { prev = null; phase = S.round < 4 ? "choose" : "debrief"; render(); window.scrollTo(0,0); };
@@ -257,7 +260,7 @@ function belief(){
 function chart(){
   const svg = $("chart"); if (!svg) return;
   const W = svg.clientWidth, H = svg.clientHeight, pad = {l:36,r:12,t:12,b:28};
-  const pts = [{ontime:58,fatigue:30,trust:55,rework:20,scope:25}].concat(S.history);
+  const pts = [{ontime:52,fatigue:30,trust:55,rework:20,scope:25}].concat(S.history);
   const X = i => pad.l + i * (W - pad.l - pad.r) / (pts.length - 1), Y = v => pad.t + (100 - v) * (H - pad.t - pad.b) / 100;
   const series = [["ontime","#1f5c40",""],["fatigue","#c8372d","6 4"],["trust","#3b7fa8","6 4"],["rework","#b8862b","6 4"],["scope","#7a5fa8","6 4"]];
   let g = "";
@@ -282,7 +285,7 @@ function debrief(){
   sendResearch();
   ["fatigue","trust","rework","scope"].forEach(k => { const e = $("h-"+k); e.textContent = Math.round(S[k]); e.style.letterSpacing = "0"; e.style.fontWeight = "600"; e.style.color = "var(--ink)"; });
   $("card").innerHTML = `<h2>Your year in review</h2>
-    <div class="sit"><p>On-time delivery went from 58% to <b>${final.ontime}%</b>. Here is what the dashboard did not show: the hidden measures, now revealed as dashed lines.</p></div>
+    <div class="sit"><p>On-time delivery went from 52% to <b>${final.ontime}%</b>. Here is what the dashboard did not show: the hidden measures, now revealed as dashed lines.</p></div>
     <div class="fig"><svg id="chart" role="img" aria-label="On-time delivery and the four hidden measures over the four quarters"></svg></div>
     <div class="legend"><span><i style="border-color:#1f5c40"></i>On-time delivery</span><span><i style="border-color:#c8372d;border-top-style:dashed"></i>Fatigue</span><span><i style="border-color:#3b7fa8;border-top-style:dashed"></i>Trust and candour</span><span><i style="border-color:#b8862b;border-top-style:dashed"></i>Rework</span><span><i style="border-color:#7a5fa8;border-top-style:dashed"></i>Late changes</span></div>
     <h3 style="margin-top:22px;font-size:22px">The loops you set off</h3>
