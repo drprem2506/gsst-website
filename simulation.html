@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en-SG">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Deadline Simulation | GSST</title>
+<meta name="description" content="Lead a division that keeps missing deadlines for four quarters. Choose your actions, face a challenge before each one, and see the hidden loops your choices set off.">
+<link rel="canonical" href="https://globalsystemsthinking.org/simulation.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="The Global School of Systems Thinking">
+<meta property="og:url" content="https://globalsystemsthinking.org/simulation.html">
+<meta property="og:title" content="The Deadline Simulation | GSST">
+<meta property="og:description" content="Lead a division that keeps missing deadlines for four quarters. Choose your actions, face a challenge before each one, and see the hidden loops your choices set off.">
+<meta property="og:image" content="https://globalsystemsthinking.org/assets/share/og-model.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Deadline Simulation | GSST">
+<meta name="twitter:description" content="Lead a division that keeps missing deadlines for four quarters. Choose your actions, face a challenge before each one, and see the hidden loops your choices set off.">
+<meta name="twitter:image" content="https://globalsystemsthinking.org/assets/share/og-model.jpg">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="stylesheet" href="styles.css?v=20261127d">
+<script src="share.js?v=20261124a" defer></script>
+</head>
+<body id="top">
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html"><img src="assets/logo.png" alt="The Global School of Systems Thinking" width="863" height="240"></a>
+    <nav class="nav" aria-label="Main">
+      <a href="index.html">Home</a>
+      <a href="organisations.html">Organisations</a>
+      <a href="schools.html">Schools</a>
+      <a href="model.html" aria-current="page">Our Model</a>
+      <a href="health-check.html">Health Check</a>
+      <a href="people.html">Our People</a>
+    </nav>
+  </div>
+</header>
+<main>
+<style>
+.sim{--panel:#fff;--bg:var(--paper);--deep:var(--green-deep);--red:#c8372d;--warn:#fff4dc}
+.sim h2,.sim h3{font-family:var(--display);font-weight:500;text-transform:uppercase;line-height:1.05;margin:0}
+.sim .dash{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) minmax(0,1.3fr);gap:12px;margin-bottom:18px}
+.sim .g{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.sim .g .k{font-size:14px;color:var(--muted)}
+.sim .g .v{font-family:var(--display);font-size:34px;line-height:1.1}
+.sim .g .d{font-size:14px;font-weight:600;min-height:20px}
+.sim .up{color:var(--green)}.sim .down{color:var(--red)}
+.sim .hid .row{display:flex;justify-content:space-between;gap:8px;font-size:14px;color:var(--muted);padding:2px 0}
+.sim .hid .row span:last-child{letter-spacing:.2em}
+.sim .card{display:block;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:clamp(18px,3vw,28px)}
+.sim .card h2{font-size:clamp(24px,3vw,32px)}
+.sim .sit{margin:10px 0 16px}.sim .sit p{margin:0 0 8px;max-width:none}
+.sim .note{padding:10px 14px;border-radius:10px;background:var(--tint);border-left:4px solid var(--green);margin:0 0 14px;max-width:none}
+.sim .opts{display:grid;gap:10px}
+.sim .opt{font:inherit;text-align:left;padding:14px 16px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;min-height:52px}
+.sim .opt:hover{border-color:var(--green)}.sim .opt b{display:block}.sim .opt small{color:var(--green);font-weight:600}
+.sim .chal{border:2px solid var(--red);border-radius:14px;padding:18px;background:var(--warn);margin-top:14px}
+.sim .chal .lab{font-weight:600;color:var(--red);font-size:14px;text-transform:uppercase;letter-spacing:.06em}
+.sim .chal p{font-size:19px;margin:6px 0 14px;max-width:none}
+.sim .nav{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.sim .b{font:inherit;font-size:16px;font-weight:600;min-height:44px;padding:8px 18px;border-radius:10px;border:1px solid var(--green);background:transparent;color:var(--green);cursor:pointer}
+.sim .b.go{background:var(--deep);border-color:var(--deep);color:#fff}
+.sim .hint{font-size:15px;color:var(--muted);font-style:italic}
+.sim .fig{position:relative;height:300px;margin:12px 0 6px}.sim .fig svg{position:absolute;inset:0;width:100%;height:100%}
+.sim .legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:14px;color:var(--muted)}
+.sim .legend i{display:inline-block;width:22px;height:0;border-top:3px solid;vertical-align:middle;margin-right:6px}
+.sim .loops{display:grid;gap:10px;margin:14px 0}.sim .loop{padding:12px 14px;border-radius:10px;border:1px solid var(--line)}.sim .loop b{display:block}
+.sim .five{display:grid;gap:8px;margin-top:10px}.sim .five div{display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:start}
+.sim .five p{max-width:none}
+.sim .five .n{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);color:#1d2925}
+@media(max-width:760px){.sim .dash{grid-template-columns:repeat(3,minmax(0,1fr))}.sim .hid{grid-column:1/-1}.sim .g .v{font-size:28px}}
+.sim-sources{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin-top:8px}
+.sim-sources summary{cursor:pointer;font-weight:600;color:var(--green-deep)}
+.sim-sources p,.sim-sources li{font-size:0.95rem;color:var(--muted);max-width:none}
+.sim-sources ul{margin:8px 0 4px;padding-left:20px}
+.sim-sources li{margin-bottom:6px}
+</style>
+<section class="page-intro">
+  <div class="wrap stack">
+    <span class="eyebrow">Try the model in action</span>
+    <h1>The deadline simulation</h1>
+    <hr class="rule">
+    <p class="lead">You lead a division that keeps missing its deadlines. You have four quarters to turn it round. Each quarter you choose one action, and before you commit, someone will challenge your thinking.</p>
+    <p>It takes about five minutes. Nothing you choose is stored or sent anywhere.</p>
+  </div>
+</section>
+<section class="sim" style="padding-top:8px">
+  <div class="wrap">
+  <div class="dash" aria-label="Dashboard">
+    <div class="g"><div class="k">On-time delivery</div><div class="v" id="v-ontime"></div><div class="d" id="d-ontime"></div></div>
+    <div class="g"><div class="k">Budget left</div><div class="v" id="v-budget"></div><div class="d" id="d-budget"></div></div>
+    <div class="g"><div class="k">Backlog (tasks)</div><div class="v" id="v-backlog"></div><div class="d" id="d-backlog"></div></div>
+    <div class="g hid"><div class="k">Hidden measures</div>
+      <div class="row"><span>Fatigue</span><span id="h-fatigue">? ? ?</span></div><div class="row"><span>Trust and candour</span><span id="h-trust">? ? ?</span></div>
+      <div class="row"><span>Rework</span><span id="h-rework">? ? ?</span></div><div class="row"><span>Late changes</span><span id="h-scope">? ? ?</span></div></div>
+  </div>
+  <div class="card" id="card" aria-live="polite"></div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <details class="sim-sources">
+      <summary>What's behind the simulation</summary>
+      <p>The numbers are illustrative, set to show the patterns clearly. The links between them come from research:</p>
+      <ul>
+        <li><strong>Fatigue:</strong> output rises more slowly than hours once people work beyond about 49 hours a week, and long hours are linked to more accidents and errors (John Pencavel, <em>The Productivity of Working Hours</em>, 2015).</li>
+        <li><strong>Trust and candour:</strong> teams that feel safe to speak up report problems and mistakes earlier (Amy Edmondson's research on psychological safety).</li>
+        <li><strong>Rework:</strong> errors found late, and redone, are at the heart of why projects slip (system dynamics research on the "rework cycle", reviewed by James Lyneis and David Ford, 2007).</li>
+        <li><strong>Late changes:</strong> about half of projects experience scope creep or uncontrolled changes (Project Management Institute, <em>Pulse of the Profession</em>, 2018).</li>
+        <li><strong>Extra control:</strong> signals of distrust can lower people's effort (Armin Falk and Michael Kosfeld, "The Hidden Cost of Control", 2006).</li>
+        <li><strong>Adding people:</strong> new people need time and support before they add capacity (Fred Brooks, <em>The Mythical Man-Month</em>, 1975).</li>
+      </ul>
+    </details>
+  </div>
+</section>
+<script>
+{
+// Deadline simulation model: shared by the page and the Node test.
+// Visible: on-time %, budget, backlog. Hidden: fatigue, trust (candour), rework, late scope changes.
+const CHOICES = {
+  overtime: { label: "Push for overtime to hit the dates", short: "Overtime push",
+    now: { boost: 14, fatigue: 18, backlog: -12 }, later: [{ in: 1, rework: 12, trust: -4 }],
+    challenge: "What happens to the same people after a quarter of extra hours, and what slips when they are tired?" },
+  check: { label: "Add a sign-off step so nothing goes out unchecked", short: "Extra sign-off",
+    now: { boost: -4, rework: -10 }, later: [{ in: 1, backlog: 8, trust: -8 }],
+    challenge: "Who will feel this check is aimed at them, and what might they stop telling you?" },
+  hire: { label: "Bring in contractors to add capacity", short: "Contractors",
+    now: { boost: 4, budget: -25, backlog: -8 }, later: [{ in: 1, rework: 8 }, { in: 2, backlog: -10 }],
+    challenge: "How long before new people are productive, and who has to train them meanwhile?" },
+  ask: { label: "Spend a week asking the front line what really causes the delays", short: "Ask the front line",
+    now: { boost: -12, trust: 12, learned: true }, later: [{ in: 1, rework: -5 }],
+    challenge: "What will you do with what you hear, and how quickly will people see you act on it?" },
+  freeze: { label: "Agree a cut-off date for changes with the project sponsors", short: "Change cut-off", needs: "learned",
+    now: { scope: -20, frozen: true, trust: 5 }, later: [],
+    challenge: "Who has to agree to this, and what would make it worth their while?" },
+  replace: { label: "Replace the project lead with someone more experienced", short: "New project lead",
+    now: { budget: -10, trust: -15 }, later: [{ in: 1, rework: 10 }, { in: 2, backlog: 5 }],
+    challenge: "If the next lead faces the same pressures and the same late changes, what will be different?" }
+};
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+function newState() {
+  return { round: 0, ontime: 58, budget: 100, backlog: 40, fatigue: 30, trust: 55, rework: 20, scope: 25,
+           learned: false, frozen: false, queue: [], history: [], picks: [] };
+}
+function snapshot(s) { return { ontime: s.ontime, budget: s.budget, backlog: s.backlog, fatigue: s.fatigue, trust: s.trust, rework: s.rework, scope: s.scope }; }
+function apply(s, key) {
+  const c = CHOICES[key]; s.round++; s.picks.push(key);
+  let boost = 0;
+  const add = (fx) => { for (const k in fx) {
+    if (k === "boost") boost += fx[k];
+    else if (k === "learned" || k === "frozen") s[k] = fx[k];
+    else if (k !== "in") s[k] += fx[k]; } };
+  // effects arriving now from earlier decisions
+  s.queue.filter(q => q.at === s.round).forEach(q => add(q.fx));
+  s.queue = s.queue.filter(q => q.at > s.round);
+  add(c.now);
+  c.later.forEach(l => s.queue.push({ at: s.round + l.in, fx: l }));
+  // the system's own movement each quarter
+  if (!s.frozen) s.scope += 7;                               // late changes keep arriving
+  if (key !== "overtime") s.fatigue -= 6;                    // people recover a little
+  s.rework += Math.max(0, s.fatigue - 40) * 0.25;            // tired people make more mistakes
+  s.backlog += 2 + s.scope * 0.08 + s.rework * 0.05;         // steady demand, swollen by changes and rework
+  s.trust += s.ontime < 50 ? -3 : 0;                         // repeated misses erode trust
+  s.fatigue = clamp(s.fatigue, 5, 95); s.trust = clamp(s.trust, 5, 95);
+  s.rework = clamp(s.rework, 0, 90); s.scope = clamp(s.scope, 0, 90); s.backlog = clamp(s.backlog, 0, 120);
+  s.ontime = Math.round(clamp(100 - 0.32 * s.backlog - 0.45 * s.rework - 0.4 * s.scope
+    - 0.55 * Math.max(0, s.fatigue - 35) + 0.3 * (s.trust - 50) + boost, 12, 97));
+  s.history.push(snapshot(s));
+  return s;
+}
+
+
+const $ = (id) => document.getElementById(id);
+const esc = (x) => String(x).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let S, prev, pending = null, phase = "intro", first = [], plays = 0, sent = false, share = true;
+const ENDPOINT = "https://script.google.com/macros/s/AKfycbw_pX-eAvm-QaGTLADu6RY6bb-65RiuWouXvSr3eJKB6TKcOi8VecgTOIo18xHAQvfL/exec";
+const START = { ontime: 58, budget: 100, backlog: 40 };
+
+function dash(){
+  const cur = S.history.length ? S.history[S.history.length-1] : START;
+  const p = prev || cur;
+  [["ontime","%"],["budget",""],["backlog",""]].forEach(([k,u]) => {
+    const v = Math.round(cur[k]); $("v-"+k).textContent = (k==="budget"?"$":"") + v + (k==="budget"?"k":u);
+    const dv = Math.round(cur[k] - p[k]); const good = k==="backlog" ? dv < 0 : dv > 0;
+    $("d-"+k).textContent = dv === 0 ? "" : (dv > 0 ? "▲ " : "▼ ") + Math.abs(dv) + (k==="ontime"?" pts":"");
+    $("d-"+k).className = "d " + (dv === 0 ? "" : good ? "up" : "down");
+  });
+}
+function situation(){
+  const r = S.round + 1, h = S.history[S.history.length-1];
+  if (r === 1) return ["Your division has missed three of its last four deadlines. Leadership wants on-time delivery up this quarter, and all eyes are on you."];
+  const out = [`Quarter ${r}. On-time delivery is now ${h.ontime}%.`];
+  if (S.picks[S.picks.length-1] === "ask") out.push("What the front line told you: most delays start with late changes from project sponsors, and people stopped raising risks early after a tough review last year.");
+  if (S.fatigue > 55) out.push("Two experienced staff are on medical leave, and others look worn out.");
+  if (S.trust < 40) out.push("Problems now surface late, often days before a deadline.");
+  if (S.rework > 40) out.push("A lot of finished work is coming back to be redone.");
+  if (!S.frozen && S.scope > 45 && S.learned) out.push("Sponsors have asked for more changes mid-project.");
+  if (S.frozen) out.push("Changes now arrive before the cut-off date, and plans are holding better.");
+  if (S.budget < 50) out.push("Finance has flagged the overspend.");
+  if (out.length === 1) out.push("Leadership is watching the figures closely.");
+  return out;
+}
+function render(){
+  dash();
+  const card = $("card");
+  if (phase === "intro"){
+    card.innerHTML = `<h2>Before you start</h2><div class="sit"><p>The dashboard shows what you can see: on-time delivery, budget and backlog. Some things that matter are hidden, and you will only see them at the end. Some effects of your choices will also take time to arrive.</p><p>There is no single right answer. Notice what you assume as you go.</p></div><label style="display:flex;gap:10px;align-items:flex-start;font-size:15px;color:var(--muted)"><input type="checkbox" id="share" ${share ? "checked" : ""} style="margin-top:4px;width:18px;height:18px"> <span>Share my anonymous choices to help GSST's research on how people decide. Nothing that identifies you is collected. <a href="privacy.html#simulation">Privacy note</a></span></label><div class="nav"><button class="b go" id="begin">Start quarter 1</button></div>`;
+    $("begin").onclick = () => { share = $("share").checked; plays++; sent = false; first = []; phase = "choose"; render(); };
+    return;
+  }
+  if (phase === "choose"){
+    const keys = Object.keys(CHOICES).filter(k => !CHOICES[k].needs || S[CHOICES[k].needs]);
+    card.innerHTML = `<h2>Quarter ${S.round+1} of 4</h2><div class="sit">${situation().map(t => `<p>${esc(t)}</p>`).join("")}</div>
+      ${S.learned && !S.frozen ? '<p class="note">A new option is open to you, based on what the front line told you.</p>' : ""}
+      <p><b>What will you do this quarter?</b></p><div class="opts">${keys.map(k => `<button class="opt" data-k="${k}"><b>${esc(CHOICES[k].label)}</b>${k==="freeze"?'<small>New option</small>':""}</button>`).join("")}</div>
+      ${pending ? `<div class="chal" role="dialog" aria-labelledby="chq"><div class="lab">Challenge</div><p id="chq">${esc(CHOICES[pending].challenge)}</p><div class="nav" style="margin-top:0"><button class="b go" id="stay">Stay with my choice</button><button class="b" id="again">Choose again</button></div></div>` : ""}`;
+    card.querySelectorAll(".opt").forEach(b => b.onclick = () => { pending = b.dataset.k; if (!first[S.round]) first[S.round] = pending; render(); const s = $("stay"); if (s) s.focus(); });
+    if (pending){
+      card.querySelectorAll(".opt").forEach(b => { if (b.dataset.k === pending) b.style.borderColor = "var(--red)"; });
+      $("stay").onclick = () => { prev = S.history.length ? S.history[S.history.length-1] : START; apply(S, pending); pending = null; phase = "result"; render(); };
+      $("again").onclick = () => { pending = null; render(); };
+    }
+    return;
+  }
+  if (phase === "result"){
+    const h = S.history[S.history.length-1], k = S.picks[S.picks.length-1];
+    const building = S.queue.length > 0;
+    card.innerHTML = `<h2>End of quarter ${S.round}</h2><div class="sit"><p>You chose: <b>${esc(CHOICES[k].short)}</b>. On-time delivery is now <b>${h.ontime}%</b>.</p>
+      ${building ? '<p class="hint">Something is building that the dashboard does not show yet.</p>' : ""}</div>
+      <div class="nav"><button class="b go" id="next">${S.round < 4 ? "Go to quarter " + (S.round+1) : "See your review"}</button></div>`;
+    $("next").onclick = () => { prev = null; phase = S.round < 4 ? "choose" : "debrief"; render(); window.scrollTo(0,0); };
+    return;
+  }
+  if (phase === "debrief") return debrief();
+}
+function loops(){
+  const n = (k) => S.picks.filter(p => p === k).length, out = [];
+  if (n("overtime")) out.push(["A fix that backfires", "Overtime lifted results quickly, then fatigue led to mistakes and rework, and deadlines slipped again."]);
+  if (n("check")) out.push(["More control, less candour", "The extra sign-off caught errors but slowed work, and people felt distrusted, so problems surfaced later."]);
+  if (n("hire")) out.push(["Adding people late", "Contractors added capacity, but training and coordination added rework first. Fred Brooks observed this in late software projects; well-supported newcomers can help sooner."]);
+  if (n("replace")) out.push(["Changing the person, not the system", "The new lead faced the same late changes, and fear of blame made problems harder to see."]);
+  if (n("ask")) out.push(["Listening first", "Asking the front line cost a week, but surfaced the hidden cause: late changes, and risks no longer raised early."]);
+  if (n("freeze")) out.push(["The small change", "A cut-off for late changes slowed the loop that kept deadlines slipping."]);
+  if (!n("freeze")) out.push(["The cause that stayed hidden", `Late changes kept growing in the background, from 25 to ${Math.round(S.scope)}, adding to the backlog every quarter.`]);
+  return out;
+}
+function belief(){
+  const c = {}; S.picks.forEach(p => c[p] = (c[p]||0) + 1);
+  const top = Object.keys(c).sort((a,b) => c[b]-c[a])[0];
+  return ({ overtime:"The problem is effort: if people try harder, the dates will be met.", check:"The problem is control: tighter checks will prevent slippage.",
+    hire:"The problem is capacity: more people will clear the work.", replace:"The problem is the person: the right leader will fix it.",
+    ask:"The problem is in the system, and the people closest to the work can see it.", freeze:"The problem is in the system, and the people closest to the work can see it." })[top];
+}
+function chart(){
+  const svg = $("chart"); if (!svg) return;
+  const W = svg.clientWidth, H = svg.clientHeight, pad = {l:36,r:12,t:12,b:28};
+  const pts = [{ontime:58,fatigue:30,trust:55,rework:20,scope:25}].concat(S.history);
+  const X = i => pad.l + i * (W - pad.l - pad.r) / (pts.length - 1), Y = v => pad.t + (100 - v) * (H - pad.t - pad.b) / 100;
+  const series = [["ontime","#1f5c40",""],["fatigue","#c8372d","6 4"],["trust","#3b7fa8","6 4"],["rework","#b8862b","6 4"],["scope","#7a5fa8","6 4"]];
+  let g = "";
+  [0,25,50,75,100].forEach(v => g += `<line x1="${pad.l}" x2="${W-pad.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="rgba(86,101,95,.18)"/><text x="${pad.l-6}" y="${Y(v)+4}" text-anchor="end" font-size="11" fill="currentColor" opacity=".6">${v}</text>`);
+  pts.forEach((_,i) => g += `<text x="${X(i)}" y="${H-8}" text-anchor="${i===0?"start":i===pts.length-1?"end":"middle"}" font-size="12" fill="currentColor" opacity=".7">${i===0?"Start":(W<420?"Q":"Quarter ")+i}</text>`);
+  series.forEach(([k,c,dash]) => {
+    const d = pts.map((p,i) => (i?"L":"M") + X(i) + "," + Y(Math.max(0,Math.min(100,p[k])))).join(" ");
+    g += `<path d="${d}" fill="none" stroke="${c}" stroke-width="${k==="ontime"?3.5:2.2}" ${dash?`stroke-dasharray="${dash}"`:""}/>`;
+    pts.forEach((p,i) => g += `<circle cx="${X(i)}" cy="${Y(Math.max(0,Math.min(100,p[k])))}" r="${k==="ontime"?4:2.5}" fill="${c}"/>`);
+  });
+  svg.innerHTML = g;
+}
+let ro = null;
+function sendResearch(){
+  if (!share || sent || !window.fetch) return; sent = true;
+  const payload = { type: "sim", picks: S.picks, first: first, ontime: S.history.map(h => h.ontime),
+    fatigue: Math.round(S.fatigue), trust: Math.round(S.trust), rework: Math.round(S.rework), scope: Math.round(S.scope), play: plays };
+  try { fetch(ENDPOINT, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(payload) }).catch(() => {}); } catch (e) {}
+}
+function debrief(){
+  const final = S.history[S.history.length-1];
+  sendResearch();
+  ["fatigue","trust","rework","scope"].forEach(k => { const e = $("h-"+k); e.textContent = Math.round(S[k]); e.style.letterSpacing = "0"; e.style.fontWeight = "600"; e.style.color = "var(--ink)"; });
+  $("card").innerHTML = `<h2>Your year in review</h2>
+    <div class="sit"><p>On-time delivery went from 58% to <b>${final.ontime}%</b>. Here is what the dashboard did not show: the hidden measures, now revealed as dashed lines.</p></div>
+    <div class="fig"><svg id="chart" role="img" aria-label="On-time delivery and the four hidden measures over the four quarters"></svg></div>
+    <div class="legend"><span><i style="border-color:#1f5c40"></i>On-time delivery</span><span><i style="border-color:#c8372d;border-top-style:dashed"></i>Fatigue</span><span><i style="border-color:#3b7fa8;border-top-style:dashed"></i>Trust and candour</span><span><i style="border-color:#b8862b;border-top-style:dashed"></i>Rework</span><span><i style="border-color:#7a5fa8;border-top-style:dashed"></i>Late changes</span></div>
+    <h3 style="margin-top:22px;font-size:22px">The loops you set off</h3>
+    <div class="loops">${loops().map(([t,d]) => `<div class="loop"><b>${esc(t)}</b>${esc(d)}</div>`).join("")}</div>
+    <h3 style="margin-top:22px;font-size:22px">Your year through the five questions</h3>
+    <div class="five">
+      <div><span class="n" style="background:#f4b2a1">1</span><p style="margin:0"><b>The story:</b> deadlines kept slipping, and you had four quarters to act. Your choices: ${S.picks.map(p => esc(CHOICES[p].short)).join(", ")}.</p></div>
+      <div><span class="n" style="background:#f9d48a">2</span><p style="margin:0"><b>The pattern:</b> the chart above. Did results improve quickly and then slide back, or dip first and then hold?</p></div>
+      <div><span class="n" style="background:#9fd8e6">3</span><p style="margin:0"><b>The structure:</b> the loops above, many working through the hidden measures and with delays.</p></div>
+      <div><span class="n" style="background:#c9b6e8">4</span><p style="margin:0"><b>Beliefs and purpose:</b> your choices suggest this belief: <i>${esc(belief())}</i> Is that what you believe about deadlines where you work?</p></div>
+      <div><span class="n" style="background:#a6dcbc">5</span><p style="margin:0"><b>The small change:</b> here, the lever was the late changes, found by asking the people closest to the work. Where might the lever be in your own organisation?</p></div>
+    </div>
+    <div class="nav" style="margin-top:22px"><button class="b go" id="again2">Play again with different choices</button><a class="b" href="health-check.html" style="text-decoration:none;display:inline-flex;align-items:center">Try the Health Check</a><a class="b" href="model.html" style="text-decoration:none;display:inline-flex;align-items:center">Back to the model</a></div>
+    <p class="hint" style="margin-top:16px">A simplified model for learning, not a forecast.</p>`;
+  if (ro) ro.disconnect(); ro = new ResizeObserver(chart); ro.observe($("chart")); chart();
+  $("again2").onclick = () => { ["fatigue","trust","rework","scope"].forEach(k => { const e = $("h-"+k); e.textContent = "? ? ?"; e.removeAttribute("style"); }); S = newState(); prev = null; pending = null; phase = "intro"; render(); window.scrollTo(0,0); };
+}
+S = newState(); render();
+}
+</script>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <span>&copy; 2026 The Global School of Systems Thinking. All rights reserved. You may quote and share the GSST Thinking Smarter Model and the content on this site with credit to GSST. Please <a href="mailto:globalsystemsthinking@gmail.com">ask us</a> for permission to use them in training, workshops or publications.</span>
+    <nav aria-label="Footer">
+      <a href="index.html">Home</a>
+      <a href="organisations.html">Organisations</a>
+      <a href="schools.html">Schools</a>
+      <a href="model.html">Our Model</a>
+      <a href="health-check.html">Health Check</a>
+      <a href="people.html">Our People</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="mailto:globalsystemsthinking@gmail.com">globalsystemsthinking@gmail.com</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>
